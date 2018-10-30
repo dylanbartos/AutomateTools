@@ -4,22 +4,24 @@ $WBSummary = Get-WBSummary
 
 # Getting datesfor script execution, last successful job, and next scheduled job
 [DateTime] $ScriptRun = Get-Date
-[DateTime] $LastSuccess = Get-Date $WBSummary.LastSuccessfulBackupTime
-[DateTime] $NextJob = Get-Date $WBSummary.NextBackupTime
+[DateTime] $LastSuccess = $WBSummary.LastSuccessfulBackupTime
+[DateTime] $NextJob = $WBSummary.NextBackupTime
 
 # Determining the age of the last successful backup
 $LastJob = New-TimeSpan -Start ($LastSuccess) -End (Get-Date)
 $Age = [math]::Round(($LastJob.Days) + (($LastJob.Hours) / 24), 2)
 
 # Getting the backup target type and scope of backup job
-$BackupType = (Get-WBBackupTarget -Policy (Get-WBPolicy)).TargetType
-$Scope = (($WBPolicy | Select -Property VolumesToBackup | FT -HideTableHeaders | Out-String).trim()) -replace '[{}]', ''
+$BackupType = (Get-WBBackupTarget -Policy $WBPolicy).TargetType
+$Scope = $WBPolicy.VolumesToBackup -join ", "
 
 # Getting all error logs for the time specified
-$WBErrors = (Get-WinEvent Microsoft-Windows-Backup | Where-Object {($_.LevelDisplayName -like 'Error') -and ($_.TimeCreated -ge (get-date).AddDays(-1))})
+$WBErrors = (Get-WinEvent Microsoft-Windows-Backup |
+    Where-Object {($_.LevelDisplayName -like 'Error') -and ($_.TimeCreated -ge (get-date).AddDays(-1))})
 
-# Output for testing purposes
 
+###############################
+# Output for testing purposes #
 Write-Host "`nScript Run Timestamp: "$ScriptRun
 Write-Host "Last Success: " $LastSuccess
 Write-Host "Next Job: "$NextJob
