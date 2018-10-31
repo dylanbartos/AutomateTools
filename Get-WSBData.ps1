@@ -3,6 +3,11 @@
         $Threshold = 0
     )
 
+    # Added the Windows Server Backup module if not present
+    If(Get-Command Get-WBSummary -Eq $Null -ErrorAction Ignore){
+        Add-PSSnapIn Windows.ServerBackup
+    }
+
     # Storing native command output as objects
     $WBPolicy = Get-WBPolicy
     $WBSummary = Get-WBSummary
@@ -25,12 +30,10 @@
         Where-Object {($_.LevelDisplayName -like 'Error') -and ($_.TimeCreated -ge ($ScriptRun).AddDays(-$Threshold))})
     [int] $ErrorCount = $ErrorLogs.Count
 
+    # Setting status to 'error' if backup age is above threshold or error were detected in that time frame
+    $BackupStatus = "Normal"
     If(($Age -gt $Threshold) -Or ($ErrorCount -gt 0)){
         $BackupStatus = "Error"
-    }
-
-    Else{
-        $BackupStatus = "Normal"
     }
 
 
@@ -51,4 +54,4 @@
 
 }
 
-Get-WBStats -Threshold 10
+Get-WBStats -Threshold 1
