@@ -4,7 +4,7 @@
     )
 
     # Added the Windows Server Backup module if not present
-    If(Get-Command Get-WBSummary -Eq $Null -ErrorAction Ignore){
+    If((Get-Command Get-WBSummary).count -eq 0){
         Add-PSSnapIn Windows.ServerBackup
     }
 
