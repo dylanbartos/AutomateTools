@@ -49,6 +49,7 @@ Function Get-WBStats {
     param(
         [Parameter(Mandatory=$True)]
         [string] $FilePath,
+        [bool] $CliXml = $False,
         [int] $Threshold = 1
     )
 
@@ -89,6 +90,7 @@ Function Get-WBStats {
         $BackupStatus = "Error"
     }
 
+    # Setting data in a hash table for output
     $Data = @{
         ScriptRun = $ScriptRun
         LastSuccess = $LastSuccess
@@ -101,8 +103,15 @@ Function Get-WBStats {
         BackupStatus = $BackupStatus
     }
 
-    Out-PlainXML -FilePath $FilePath -Data $Data
+    # Output data to XML format, determined by user input
+    If($CliXml -eq $True){
+        $Data | Export-Clixml -Path $FilePath
+    }
+    Else{
+        Out-PlainXML -FilePath $FilePath -Data $Data
+    }
+    
 }
 
 # Output Testing #
-Get-WBStats -FilePath "C:\test.xml" -Threshold 1
+Get-WBStats -FilePath "C:\test.xml" -CliXml $False -Threshold 1
