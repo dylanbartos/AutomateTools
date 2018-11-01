@@ -3,7 +3,7 @@
         [Parameter(Mandatory=$True)]
         [string] $FilePath,
         [string] $RootElement = "Data",
-        [Parameter(Mandatory=$True)]
+        [parameter(ValueFromPipeline)]
         [hashtable] $Data
     )
     # Special thanks to Roger Delph, from whom much of this code was borrowed:
@@ -108,7 +108,7 @@ Function Get-WBStats {
         $Data | Export-Clixml -Path $FilePath
     }
     Else{
-        Out-PlainXML -FilePath $FilePath -Data $Data
+        $Data | Out-PlainXML -FilePath $FilePath
     }
     
 }
