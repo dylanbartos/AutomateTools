@@ -1,9 +1,31 @@
-﻿Function Out-PlainXML {
+﻿# A function used to output a hashtable as a csv file
+Function Out-PlainCSV {
+    param(
+        [Parameter(Mandatory=$True)]
+        [string] $FilePath,
+        [Parameter(Mandatory=$True)]
+        [hashtable] $Data,
+        $Delimiter = ","
+    )
+
+    # Building the string for output
+    [string] $CSVString = ""
+    $Data.GetEnumerator() | ForEach-Object{
+        $CSVString += "{0}{1}{2}{3}" -f $_.key, $Delimiter, $_.value, $Delimiter
+    }
+    
+    # Writing the string to a file
+    $CSVString.TrimEnd($Delimiter) | Out-File $FilePath
+}
+
+
+# A function used to output a hashtable as a xml file
+Function Out-PlainXML {
     param(
         [Parameter(Mandatory=$True)]
         [string] $FilePath,
         [string] $RootElement = "Data",
-        [parameter(ValueFromPipeline)]
+        [Parameter(Mandatory=$True)]
         [hashtable] $Data
     )
     # Special thanks to Roger Delph, from whom much of this code was borrowed:
@@ -45,11 +67,15 @@
     $xmlWriter.Close()
 }
 
+
+# A function used to collect Windows Server Backup stats and output them in the specified format
 Function Get-WBStats {
     param(
         [Parameter(Mandatory=$True)]
         [string] $FilePath,
-        [bool] $CliXml = $False,
+        [ValidateSet("Xml", "CliXml", "Csv")]
+        [string] $OutputType = "Xml",
+        $Delimiter = ",",
         [int] $Threshold = 1
     )
 
@@ -104,14 +130,22 @@ Function Get-WBStats {
     }
 
     # Output data to XML format, determined by user input
-    If($CliXml -eq $True){
+    If($OutputType -eq "CliXml"){
         $Data | Export-Clixml -Path $FilePath
     }
+    ElseIf($OutputType -eq "Csv"){
+        Out-PlainCsv -FilePath $FilePath -Delimiter $Delimiter -Data $Data
+    }
     Else{
-        $Data | Out-PlainXML -FilePath $FilePath
+        Out-PlainXML -FilePath $FilePath -Data $Data
     }
     
 }
 
 # Output Testing #
-Get-WBStats -FilePath "C:\test.xml" -CliXml $False -Threshold 1
+
+# Get-WBStats -FilePath "C:\test.xml" -OutputType csv -Delimiter " | " -Threshold 1
+
+# Get-WBStats -FilePath "C:\test.xml" -OutputType clixml -Threshold 10
+
+# Get-WBStats -FilePath "C:\test.xml"
