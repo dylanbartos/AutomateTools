@@ -1,6 +1,55 @@
-﻿Function Get-WBStats {
+﻿Function Out-PlainXML {
     param(
-        $Threshold = 1
+        [Parameter(Mandatory=$True)]
+        [string] $FilePath,
+        [string] $RootElement = "Data",
+        [Parameter(Mandatory=$True)]
+        [hashtable] $Data
+    )
+    # Special thanks to Roger Delph, from whom much of this code was borrowed:
+    # https://www.rogerdelph.com/creating-xml-documents-from-powershell/
+
+    # Create The Document
+    $XmlWriter = New-Object System.XMl.XmlTextWriter($FilePath,$Null)
+ 
+    # Set The Formatting
+    $xmlWriter.Formatting = "Indented"
+    $xmlWriter.Indentation = "4"
+ 
+    # Write the XML Decleration
+    $xmlWriter.WriteStartDocument()
+ 
+    # Set the XSL
+    $XSLPropText = "type='text/xsl' href='style.xsl'"
+    $xmlWriter.WriteProcessingInstruction("xml-stylesheet", $XSLPropText)
+ 
+    # Write Root Element
+    $xmlWriter.WriteStartElement("RootElement")
+ 
+    # Write the Document
+    $xmlWriter.WriteStartElement($RootElement)
+    $Data.GetEnumerator() | ForEach-Object{
+        $xmlWriter.WriteElementString($_.key, $_.value)
+    }
+    $xmlWriter.WriteEndElement | Out-Null
+ 
+    # Write Close Tag for Root Element
+    $xmlWriter.WriteEndElement | Out-Null
+ 
+    # End the XML Document
+    $xmlWriter.WriteEndDocument()
+ 
+    # Finish The Document
+    $xmlWriter.Finalize
+    $xmlWriter.Flush | Out-Null
+    $xmlWriter.Close()
+}
+
+Function Get-WBStats {
+    param(
+        [Parameter(Mandatory=$True)]
+        [string] $FilePath,
+        [int] $Threshold = 1
     )
 
     # Added the Windows Server Backup module if not present
@@ -39,6 +88,21 @@
     If(($Age -gt $Threshold) -Or ($EventLogErrors -gt 0)){
         $BackupStatus = "Error"
     }
+
+    $Data = @{
+        ScriptRun = $ScriptRun
+        LastSuccess = $LastSuccess
+        LastJobRunTime = $JobRunTime
+        LastBackupAge = $Age
+        NextJob = $NextJob
+        Scope = $Scope
+        BackupType = $BackupType
+        EventLogErrors = $EventLogErrors
+        BackupStatus = $BackupStatus
+    }
+
+    Out-PlainXML -FilePath $FilePath -Data $Data
 }
 
-Get-WBStats -Threshold 3
+# Output Testing #
+Get-WBStats -FilePath "C:\test.xml" -Threshold 1
