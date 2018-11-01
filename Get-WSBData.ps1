@@ -28,7 +28,7 @@ Function Out-PlainXML {
         [Parameter(Mandatory=$True)]
         [hashtable] $Data
     )
-    # Special thanks to Roger Delph, from whom much of this code was borrowed:
+    # Special thanks to Roger Delph, from whom much of this XML generation code was borrowed:
     # https://www.rogerdelph.com/creating-xml-documents-from-powershell/
 
     # Create The Document
