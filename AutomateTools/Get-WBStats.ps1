@@ -19,11 +19,15 @@ https://github.com/WesScott000/AutomateTools
 
 Function Get-WBStats {
     param(
-        [string] $FilePath = "C:\WBStats.xml",
-        [ValidateSet("Xml", "CliXml", "Csv", "Cli")]
+        [Parameter(Mandatory=$True)]
+        [ValidatePattern("[a-zA-Z]\:\\.{1,}[.][cxtCXT][smxSMX][vltVLT]")]
+        [string] $FilePath,
+        [ValidateSet("Xml", "CliXml", "Csv")]
         [string] $OutputType = "Xml",
         $Delimiter = ",",
-        [int] $Threshold = 1
+        [ValidateRange(0,31)]
+        [int] $Threshold = 1,
+        [bool] $CliOutput = $False
     )
 
     # Added the Windows Server Backup module if not present
@@ -75,18 +79,26 @@ Function Get-WBStats {
         EventLogErrors = $EventLogErrors
         BackupStatus = $BackupStatus
     }
+    
+    Try {
+        # Output data to XML format, determined by user input
+        If($OutputType -eq "CliXml"){
+            $Data | Export-Clixml -Path $FilePath
+        }
+        ElseIf($OutputType -eq "Csv"){
+            Out-PlainCsv -FilePath $FilePath -Delimiter $Delimiter -Data $Data
+        }
+        Else{
+            Out-PlainXML -FilePath $FilePath -Data $Data
+        }
+    } Catch {
+        Write-Host "`n[!] There was a problem saving the output file. It's possible that:
+        - The file path does not exit.
+        - You don't have permissions to write to the file path."
+    }
 
-    # Output data to XML format, determined by user input
-    If($OutputType -eq "CliXml"){
-        $Data | Export-Clixml -Path $FilePath
-    }
-    ElseIf($OutputType -eq "Csv"){
-        Out-PlainCsv -FilePath $FilePath -Delimiter $Delimiter -Data $Data
-    }
-    ElseIf($OutputType -eq "Cli"){
+    # Output data to console if flagged for CLI output
+    If($CliOutput -eq $True){
         $Data
-    }
-    Else{
-        Out-PlainXML -FilePath $FilePath -Data $Data
     }
 }
