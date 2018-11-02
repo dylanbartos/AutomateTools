@@ -98,12 +98,15 @@ Function Get-WBStats {
         If($OutputType -eq "CliXml"){
             $Data | Export-Clixml -Path $FilePath
         }
+        # Output data to CSV format, determined by user input
         ElseIf($OutputType -eq "Csv"){
             Out-PlainCsv -FilePath $FilePath -Delimiter $Delimiter -Data $Data
         }
+        # Default output
         Else{
             Out-PlainXML -FilePath $FilePath -Data $Data
         }
+        # Output result in the event of an output error
     } Catch {
         Write-Host "`n[!] There was a problem saving the output file. It's possible that:
         - The file path does not exit.
