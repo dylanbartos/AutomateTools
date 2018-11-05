@@ -69,3 +69,4 @@ Function Out-PlainXML {
 
 # Adding supporting PowerShell functions
 . $PSScriptRoot\Get-WBStats.ps1
+. $PSScriptRoot\Remove-NoahBackups.ps1
