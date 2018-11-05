@@ -34,7 +34,7 @@ Function Remove-NoahBackups{
 
     # Iterates through the files and removes those that match the naming convention of the NOAH 4 backup files.
     ForEach ($Directory in $Directories){
-        IF ($Directory.Name -Match "[2][0]\d\d-\d\d-\d\d[ ]\d\d[.]\d\d[.]\d\d"){
+        IF ($Directory.Name -Match "[2][0]\d\d(-)\d\d(-)\d\d( )\d\d(.)\d\d(.)\d\d"){
             Remove-Item -Path ($Path + "\" + $Directory) -Force -Recurse -ErrorAction Ignore
             $BackupsDeleted += 1
         }
