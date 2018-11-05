@@ -21,7 +21,7 @@ https://github.com/WesScott000/AutomateTools
 
 Function Remove-NoahBackups{
     param(
-        [string] $Path = "C:\ProgramData\Himsa\Noah\Backup\Database",
+        [string] $Path = ($env:ProgramData + "\Himsa\Noah\Backup\Database"),
         [int] $Threshold = 90,
         [int] $Keep = 3,
         [bool] $CliOutput = $False
@@ -64,8 +64,10 @@ Function Get-NoahVersion{
 
     # Creates a RexEx and content object.
     [regex] $rx = "\d(.)[1-99](.)[1-99](.)\d\d\d\d"
-    [string] $Content = Get-Content "C:\ProgramData\HIMSA\Noah\NoahSettings.xml"
+    [string] $Content = Get-Content ($env:ProgramData + "\HIMSA\Noah\NoahSettings.xml")
 
     # Pulls the matching content from the RegEx object.
     $rx.match($Content).value
 }
+
+
