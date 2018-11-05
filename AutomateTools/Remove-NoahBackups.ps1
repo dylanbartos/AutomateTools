@@ -48,3 +48,24 @@ Function Remove-NoahBackups{
         Write-Host "Noah backups: $BackupCount found. $BackupsDeleted removed."
     }
 }
+
+
+<#
+.SYNOPSIS
+This is a simple command that finds and returns the Noah version number.
+.EXAMPLE
+Get-NoahVersion
+This command returns the version of the Noah application.
+.LINK
+https://github.com/WesScott000/AutomateTools
+#>
+
+Function Get-NoahVersion{
+
+    # Creates a RexEx and content object.
+    [regex] $rx = "\d(.)[1-99](.)[1-99](.)\d\d\d\d"
+    [string] $Content = Get-Content "C:\ProgramData\HIMSA\Noah\NoahSettings.xml"
+
+    # Pulls the matching content from the RegEx object.
+    $rx.match($Content).value
+}
