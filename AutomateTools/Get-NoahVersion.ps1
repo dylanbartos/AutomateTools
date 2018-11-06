@@ -1,5 +1,26 @@
 ﻿<#
 .SYNOPSIS
+This is a simple command that finds and returns the Noah version number.
+.EXAMPLE
+Get-NoahVersion
+This command returns the version of the Noah application.
+.LINK
+https://github.com/WesScott000/AutomateTools
+#>
+
+Function Get-NoahVersion{
+
+    # Creates a RexEx and content object.
+    [regex] $rx = "\d(.)[1-99](.)[1-99](.)\d\d\d\d"
+    [string] $Content = Get-Content ($env:ProgramData + "\HIMSA\Noah\NoahSettings.xml")
+
+    # Pulls the matching content from the RegEx object.
+    $rx.match($Content).value
+}
+
+
+<#
+.SYNOPSIS
 Remove-NoahBackups removes backup files created by the Noah 4 system.
 .DESCRIPTION
 This command removes backup files from the default Noah backup location. You can specify an alternate path to the backup files if they are not in a default directory.
@@ -52,22 +73,53 @@ Function Remove-NoahBackups{
 
 <#
 .SYNOPSIS
-This is a simple command that finds and returns the Noah version number.
-.EXAMPLE
-Get-NoahVersion
-This command returns the version of the Noah application.
+Backup-NoahDatabase makes a copy of the primary Noah database.
+.DESCRIPTION
+This command stops the Noah services and copies the default database to the default location of "C:\AutomateTools\Backups\ in a time stamped folder.
+.PARAMETER Destination
+Specifies an alternative path to save the backup database.
 .LINK
 https://github.com/WesScott000/AutomateTools
 #>
 
-Function Get-NoahVersion{
+Function Backup-NoahDatabase{
+    param(
+        $Destination = "C:\AutomateTools\Backups"
+    )
 
-    # Creates a RexEx and content object.
-    [regex] $rx = "\d(.)[1-99](.)[1-99](.)\d\d\d\d"
-    [string] $Content = Get-Content ($env:ProgramData + "\HIMSA\Noah\NoahSettings.xml")
+    # Key variables.
+    [string] $BackupFolder = $Destination + ("NoahDB_" + (Get-Date -UFormat "%Y-%m-%d") + "\")
+    [string] $DBPath = (${env:ProgramFiles(x86)} + "\Common Files\HIMSA Shared\")
+    [string] $NOAHCfg = "NOAHCfgDatabase.sdf"
+    [string] $NOAHCore = "NOAHDatabaseCoreSqlCompact.sdf"
 
-    # Pulls the matching content from the RegEx object.
-    $rx.match($Content).value
+    # Breaks down the supplied path; tests and reconstructs to make the folders in the file system.
+    Push-FileStructure -Path $BackupFolder
+
+    # Stops Noah services.
+    Stop-Service -Name NoahClient, NoahServer
+
+    # Get file hashes from source files.
+    $CfgSourceHash = Get-FileHash ($DBPath + $NOAHCfg)
+    $CoreSourceHash  = Get-FileHash ($DBPath + $NOAHCore)
+
+    # Copy databases to desigranted backup folder.
+    Copy-Item ($DBPath + $NOAHCfg) -Destination $BackupFolder
+    Copy-Item ($DBPath + $NOAHCore) -Destination $BackupFolder
+
+    # Get file hashes from copied files.
+    $CfgDestHash = Get-FileHash ($BackupFolder + $NOAHCfg)
+    $CoreDestHash  = Get-FileHash ($BackupFolder + $NOAHCore)
+
+    # Compares file hashes to make sure they match
+    $CfgHashMatch = $CfgSourceHash.hash -eq $CfgDestHash.hash
+    $CoreHashMatch = $CoreSourceHash.hash -eq $CoreDestHash.hash
+
+    # Stops Noah services.
+    Start-Service -Name NoahClient, NoahServer
+
+    # Output to confirm file copy accuracy
+    Write-Host "$NOAHCfg hash match: $CfgHashMatch"
+    Write-Host "$NOAHCore hash match: $CoreHashMatch"
+
 }
-
-
