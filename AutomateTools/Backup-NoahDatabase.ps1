@@ -24,34 +24,14 @@ Function Backup-NoahDatabase{
         $Destination = "C:\AutomateTools\Backups"
     )
 
-    # Tests and creates file paths.
-    Function ValidateLocation{
-        param(
-            [string] $Location
-        )
-        If(!(Test-Path $Location)){
-            New-Item -ItemType Directory -Path $Location
-        }
-    }
-
-
-    # Tests for a trailing slash in the file path and adds it if it doesn't exist.
-    If(!($Destination.EndsWith('\'))){
-        $Destination += '\'
-    }
-
     # Key variables.
     [string] $BackupFolder = $Destination + ("NoahDB_" + (Get-Date -UFormat "%Y-%m-%d") + "\")
     [string] $DBPath = (${env:ProgramFiles(x86)} + "\Common Files\HIMSA Shared\")
     [string] $NOAHCfg = "NOAHCfgDatabase.sdf"
     [string] $NOAHCore = "NOAHDatabaseCoreSqlCompact.sdf"
 
-    # Breaks down th esupplied path; tests and reconstructs to make the folders in the file system.
-    $Parts = $BackupFolder.split('\')
-    ForEach($Part in $Parts){
-        $BuildPath += ($Part + '\')
-        ValidateLocation -Location $BuildPath
-    }
+    # Breaks down the supplied path; tests and reconstructs to make the folders in the file system.
+    Push-FileStructure -Path $BackupFolder
 
     # Stops Noah services.
     Stop-Service -Name NoahClient, NoahServer
@@ -80,6 +60,3 @@ Function Backup-NoahDatabase{
     Write-Host "$NOAHCore hash match: $CoreHashMatch"
 
 }
-
-Backup-NoahDatabase
-get-service -Name NoahClient, NoahServer
