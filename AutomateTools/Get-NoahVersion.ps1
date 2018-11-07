@@ -84,7 +84,7 @@ https://github.com/WesScott000/AutomateTools
 
 Function Backup-NoahDatabase{
     param(
-        $Destination = "C:\AutomateTools\Backups"
+        $Destination = "C:\AutomateTools\Backups\"
     )
 
     # Key variables.
@@ -122,4 +122,29 @@ Function Backup-NoahDatabase{
     Write-Host "$NOAHCfg hash match: $CfgHashMatch"
     Write-Host "$NOAHCore hash match: $CoreHashMatch"
 
+}
+
+
+
+<#
+.SYNOPSIS
+Backup-NoahModCfg creates a copy of the Noah module manifest.
+.PARAMETER Destination
+Specifies an alternative path to save the backup database.
+.LINK
+https://github.com/WesScott000/AutomateTools
+#>
+
+Function Backup-NoahModCfg{
+    param(
+        $Destination = "C:\AutomateTools\Backups\"
+    )
+
+    Push-FileStructure -Path $Destination
+
+    [string] $ModConfig = "ClientSettings.xml"
+    [string] $Path = ($env:ProgramData + "\HIMSA\Noah\")
+    [string] $BackupFolder = $Destination + ("NoahModConfig_" + (Get-Date -UFormat "%Y-%m-%d") + "\")
+    
+    Copy-Item ($Path + $ModConfig) -Destination $BackupFolder
 }
