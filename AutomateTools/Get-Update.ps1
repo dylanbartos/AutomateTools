@@ -11,8 +11,8 @@ https://github.com/WesScott000/AutomateTools
 
 Function Get-Update{
     $url = 'https://raw.githubusercontent.com/dylanbartos/AutomateTools/master/AutomateTools/version.txt'
-    curl $url -OutFile tmp.file
-    if (Compare-Object -ReferenceObject $(Get-Content tmp.file) -DifferenceObject $(Get-Content version.txt))
+    curl $url -OutFile C:\AutomateTools\tmp.file
+    if (Compare-Object -ReferenceObject $(Get-Content C:\AutomateTools\tmp.file) -DifferenceObject $(Get-Content C:\AutomateTools\version.txt))
         ##Different
         {"Files are different"}
     Else
@@ -20,5 +20,5 @@ Function Get-Update{
         {"Files are the same"}
 
     ##Cleanup
-    Remove-Item -Path tmp.file
+    Remove-Item -Path C:\AutomateTools\tmp.file
 }
