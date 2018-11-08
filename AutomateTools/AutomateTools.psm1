@@ -118,3 +118,4 @@ Function Set-EnvironmentPath{
 . $PSScriptRoot\Get-WBStats.ps1
 . $PSScriptRoot\Remove-NoahBackups.ps1
 . $PSScriptRoot\Backup-NoahDatabase.ps1
+. $PSScriptRoot\Get-Update.ps1
