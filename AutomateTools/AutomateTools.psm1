@@ -116,6 +116,5 @@ Function Set-EnvironmentPath{
 
 # Adding supporting PowerShell functions
 . $PSScriptRoot\Get-WBStats.ps1
-. $PSScriptRoot\Remove-NoahBackups.ps1
-. $PSScriptRoot\Backup-NoahDatabase.ps1
+. $PSScriptRoot\Get-NoahVersion.ps1
 . $PSScriptRoot\Get-Update.ps1
