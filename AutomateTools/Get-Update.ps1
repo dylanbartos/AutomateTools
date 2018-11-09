@@ -25,5 +25,5 @@ Function Get-Update{
     }
 
     ##Cleanup
-    Remove-Item -Path C:\AutomateTools\tmp.file
+    Remove-Item -Path C:\AutomateTools\tmp.file -ErrorAction SilentlyContinue
 }
