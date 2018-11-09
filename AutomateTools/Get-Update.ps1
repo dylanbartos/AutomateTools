@@ -12,17 +12,17 @@ https://github.com/WesScott000/AutomateTools
 Function Get-Update{
     $url = 'https://raw.githubusercontent.com/dylanbartos/AutomateTools/master/AutomateTools/version.txt'
     curl $url -OutFile C:\AutomateTools\tmp.file
-    if (Compare-Object -ReferenceObject $(Get-Content C:\AutomateTools\tmp.file) -DifferenceObject $(Get-Content C:\AutomateTools\version.txt))
-        ##Different
-        {"Files are different"}
-        #
-        #
-        #Add code to download and launch auto-updater.
-        #
-        #
-    Else
-        ##Same
-        {"Files are the same"}
+
+    if (Compare-Object -ReferenceObject $(Get-Content C:\AutomateTools\tmp.file) -DifferenceObject $(Get-Content C:\AutomateTools\version.txt)){
+        "Files are different"
+        curl 'https://raw.githubusercontent.com/dylanbartos/AutomateTools/master/AutomateTools/Get-UpdateFiles.ps1' -OutFile "$($env:temp)\Get-UpdateFiles.ps1"
+        . "$($env:temp)\Get-UpdateFiles.ps1"
+        Get-UpdateFiles
+    }
+
+    Else {
+        "Files are the same"
+    }
 
     ##Cleanup
     Remove-Item -Path C:\AutomateTools\tmp.file
