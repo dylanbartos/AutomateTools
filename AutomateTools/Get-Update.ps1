@@ -15,6 +15,11 @@ Function Get-Update{
     if (Compare-Object -ReferenceObject $(Get-Content C:\AutomateTools\tmp.file) -DifferenceObject $(Get-Content C:\AutomateTools\version.txt))
         ##Different
         {"Files are different"}
+        #
+        #
+        #Add code to download and launch auto-updater.
+        #
+        #
     Else
         ##Same
         {"Files are the same"}

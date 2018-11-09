@@ -118,3 +118,4 @@ Function Set-EnvironmentPath{
 . $PSScriptRoot\Get-WBStats.ps1
 . $PSScriptRoot\Get-NoahVersion.ps1
 . $PSScriptRoot\Get-Update.ps1
+. $PSScriptRoot\Get-UpdateFiles.ps1
