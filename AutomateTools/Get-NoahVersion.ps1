@@ -88,7 +88,7 @@ Function Backup-NoahDatabase{
     )
 
     # Key variables.
-    [string] $BackupFolder = $Destination + ("NoahDB_" + (Get-Date -UFormat "%Y-%m-%d") + "\")
+    [string] $BackupFolder = $Destination + "NoahDBBackup\"
     [string] $DBPath = (${env:ProgramFiles(x86)} + "\Common Files\HIMSA Shared\")
     [string] $NOAHCfg = "NOAHCfgDatabase.sdf"
     [string] $NOAHCore = "NOAHDatabaseCoreSqlCompact.sdf"
@@ -144,7 +144,7 @@ Function Backup-NoahModCfg{
 
     [string] $ModConfig = "ClientSettings.xml"
     [string] $Path = ($env:ProgramData + "\HIMSA\Noah\")
-    [string] $BackupFolder = $Destination + ("NoahModConfig_" + (Get-Date -UFormat "%Y-%m-%d") + "\")
+    [string] $BackupFolder = $Destination + ("NoahModConfigBackup\")
     
     Copy-Item ($Path + $ModConfig) -Destination $BackupFolder
 }
