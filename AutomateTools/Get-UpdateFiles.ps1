@@ -39,4 +39,7 @@ Function Get-UpdateFiles{
     Else {
         Write-Host "Files failed to download successfully."
     }
+
+    #Script removes itself
+    Remove-Item $MyInvocation.InvocationName
 }
