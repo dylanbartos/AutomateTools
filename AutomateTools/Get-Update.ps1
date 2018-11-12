@@ -52,8 +52,7 @@ Function Get-UpdateFiles{
     if ($neededCount -eq $downloadedCount) {
         Write-Host "Files downloaded successfully."
         Remove-Item -Path "C:\AutomateTools\Backup" -Recurse
-        Remove-Module AutomateTools
-        Import-Module C:\AutomateTools\AutomateTools.psm1
+        Import-Module C:\AutomateTools\AutomateTools.psm1 -Force
     }
     Else {
         Write-Host "Files failed to download successfully."
