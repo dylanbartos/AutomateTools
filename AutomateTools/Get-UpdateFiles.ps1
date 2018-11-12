@@ -41,5 +41,5 @@ Function Get-UpdateFiles{
     }
 
     #Script removes itself
-    Remove-Item $MyInvocation.InvocationName
+    Remove-Item "$($env:temp)\Get-UpdateFiles.ps1"
 }
