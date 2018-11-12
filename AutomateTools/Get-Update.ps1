@@ -14,21 +14,22 @@ Function Get-Update{
     curl $url -OutFile C:\AutomateTools\tmp.file
 
     if (Compare-Object -ReferenceObject $(Get-Content C:\AutomateTools\tmp.file) -DifferenceObject $(Get-Content C:\AutomateTools\version.txt)){
-        "Files are different"
+        "Files are different!"
         Get-UpdateFiles
     }
 
     Else {
-        "Files are the same"
+        "Files are the same!"
     }
+    Remove-Item "C:\AutomateTools\tmp.file" -ErrorAction SilentlyContinue
 }
 
 Function Get-UpdateFiles{
     #Cleanup old files
-    New-Item -ItemType "directory" -Path "C:\AutomateTools\Backup" -ErrorAction SilentlyContinue
+    New-Item -ItemType "directory" -Path "C:\AutomateTools\Backup" -ErrorAction SilentlyContinue | Out-Null
     Copy-Item -Path "C:\AutomateTools\*.*" -Destination "C:\AutomateTools\Backup"
     Remove-Item -Path "C:\AutomateTools\*.*"
-    
+
     #Download Directory
     $path = 'C:\AutomateTools\'
 
@@ -51,6 +52,8 @@ Function Get-UpdateFiles{
     if ($neededCount -eq $downloadedCount) {
         Write-Host "Files downloaded successfully."
         Remove-Item -Path "C:\AutomateTools\Backup" -Recurse
+        Remove-Module AutomateTools
+        Import-Module C:\AutomateTools\AutomateTools.psm1
     }
     Else {
         Write-Host "Files failed to download successfully."
