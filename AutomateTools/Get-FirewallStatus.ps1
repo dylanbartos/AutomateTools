@@ -13,7 +13,7 @@ https://github.com/WesScott000/AutomateTools
 
 Function Get-FirewallStatus {
     #Define Regex value and retrieve firewall status
-    #netsh returns an array, the 'State' (ON or OFF) line is [3].
+    #netsh returns an array, the 'State' (ON or OFF) line is [3]. This was used to decrease regex false positive surface.
     [regex]$rx = "[O][N]"
     $netshPublic = $(netsh advfirewall show publicprofile)[3]
     $netshPrivate = $(netsh advfirewall show privateprofile)[3]
