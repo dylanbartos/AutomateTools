@@ -4,6 +4,7 @@ This command checks firewall profiles status and returns a value determinant upo
 .EXAMPLE
 Get-FirewallStatus
 This command returns the value of the overall firewall status.
+Tested OS: Win10, Win7, SBS 2011
 Output Options:
 Enabled
 :Public:Private:Domain: (disabled profiles)
