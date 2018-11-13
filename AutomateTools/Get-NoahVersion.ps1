@@ -121,9 +121,7 @@ Function Backup-NoahDatabase{
     # Output to confirm file copy accuracy
     Write-Host "$NOAHCfg hash match: $CfgHashMatch"
     Write-Host "$NOAHCore hash match: $CoreHashMatch"
-
 }
-
 
 
 <#
