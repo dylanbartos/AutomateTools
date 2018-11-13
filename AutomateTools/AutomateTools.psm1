@@ -117,3 +117,4 @@ Function Set-EnvironmentPath{
 # Adding supporting PowerShell functions
 . $PSScriptRoot\Get-WBStats.ps1
 . $PSScriptRoot\Get-NoahVersion.ps1
+. $PSScriptRoot\Get-FirewallStatus.ps1
