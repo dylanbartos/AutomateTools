@@ -45,11 +45,10 @@
 
 
 # Test Output #
-Write-Host "`n[] TEST []" -ForegroundColor Magenta
-Write-Host "Files that would be deleted:" -ForegroundColor Green
-$DetectedFiles.FullName
+$DetectedFiles.FullName | Add-Content "C:\TestResults.txt"
 }
 
+New-Item "C:\TestResults.txt"
 Remove-TempFiles -Path ($env:windir + "\temp\") -FileType "*.*" -Depth 1
 Remove-TempFiles -Path ($env:windir + "\system32\wbem\logs\") -FileType "*.*" -Age 0
 Remove-TempFiles -Path ($env:windir + "\system32\wbem\logs\") -FileType "*.*" -Depth 1
