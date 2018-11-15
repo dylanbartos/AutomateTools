@@ -15,6 +15,9 @@
     $L2Paths = @()
     $L3Paths = @()
 
+    If(!(Test-Path $OriginPath)){
+        Exit
+    }
 
     If($Depth -gt 0){
         $FoundPaths = @($OriginPath)
