@@ -8,16 +8,16 @@
         $Age = 30
     )
 
+    If(!(Test-Path $Path)){
+        Exit
+    }
+
     [datetime] $ThresholdDate = (Get-Date).AddDays(-$Age)
     $OriginPath = Get-Item $Path
     $SpaceFreed = 0
     $L1Paths = @()
     $L2Paths = @()
     $L3Paths = @()
-
-    If(!(Test-Path $OriginPath)){
-        Exit
-    }
 
     If($Depth -gt 0){
         $FoundPaths = @($OriginPath)
