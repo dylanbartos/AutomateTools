@@ -1,22 +1,48 @@
-﻿Function Remove-TempFiles {
-    param(
-        [Parameter(Mandatory=$True)]
-        [string] $Path,
-        [Parameter(Mandatory=$True)]
-        [string] $FileType,
-        [int] $Depth = 0,
-        [int] $Age = 30,
-        [int] $SpaceCleaned = 0
-    )
+﻿$Path = "C:\Support"
+$FileType = "*.*"
+$Depth = 3
+$Age = 0
 
-    [datetime] $ThresholdDate = (Get-Date).AddDays(-$Age)
-    $results = Get-ChildItem -Path $Path -Depth $Depth -ErrorAction Ignore | Where-Object { ($_.name -match "\....\b") -and ($_.name -like $FileType) -and ($_.LastWriteTime -lt $ThresholdDate) }
+[datetime] $ThresholdDate = (Get-Date).AddDays(-$Age)
+$OriginPath = Get-Item $Path
+$SpaceFreed = 0
 
-    ForEach($result in $results){
-        $Result | Remove-Item -Force -ErrorAction Ignore
+
+If($Depth -gt 0){
+    $FoundPaths = @($OriginPath)
+    $L1Paths = @(Get-ChildItem $OriginPath.FullName | Where-Object {$_.Attributes -eq "Directory"})
+    $FoundPaths += $L1Paths
+
+    If(($Depth -gt 1) -and ($L1Paths)){
+        $L2Paths = @()
+        ForEach($L1Path in $L1Paths){
+            $L2Paths += Get-ChildItem $L1Path.FullName | Where-Object {$_.Attributes -eq "Directory"}
+        }
+        $FoundPaths += $L2Paths
+
+        If(($Depth -gt 2) -and ($L2Paths)){
+            $L3Paths = @()
+            ForEach($L2Path in $L2Paths){
+                $L3Paths += Get-ChildItem $L2Path.FullName | Where-Object {$_.Attributes -eq "Directory"}
+            }
+            $FoundPaths += $L3Paths
+
+        }
     }
- }
+}
 
+$DetectedFiles = @()
+ForEach($P in $FoundPaths){
+    $FoundFile = Get-ChildItem -Path $P.FullName | Where-Object {($_.Attributes -ne "Directory") -and ($_.LastWriteTime -lt $ThresholdDate) -and ($_.Extension -like $FileType)}
+    $DetectedFiles += $FoundFile
+}
+
+# Testing
+Write-Host "`n[] TEST []" -ForegroundColor Magenta
+Write-Host "Files that would be deleted:" -ForegroundColor Green
+$DetectedFiles.FullName
+
+<#
 Remove-TempFiles -Path ($env:windir + "\temp\") -FileType "*.*" -Depth 1
 Remove-TempFiles -Path ($env:windir + "\system32\wbem\logs\") -FileType "*.*" -Age 0
 Remove-TempFiles -Path ($env:windir + "\system32\wbem\logs\") -FileType "*.*" -Depth 1
@@ -27,3 +53,4 @@ Remove-TempFiles -Path ($env:systemdrive + "\users\*\AppData\Local\Temp") -FileT
 Remove-TempFiles -Path ($env:systemdrive + "\users\*\AppData\Local\Temp") -FileType "*.*" -Depth 1 -Age 0
 Remove-TempFiles -Path ($env:systemdrive + "\users\*\Downloads\") -FileType "*.scl" -Age 0
 Remove-TempFiles -Path ($env:ProgramData + "\Himsa\Noah\Backup\Database") -FileType "*.*" -Depth 2 -Age 90
+#>
