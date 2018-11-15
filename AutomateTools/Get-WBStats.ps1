@@ -44,7 +44,9 @@ Function Get-WBStats {
     )
 
     # Added the Windows Server Backup module if not present
-    If((Get-Command Get-WBSummary*).count -eq 0){
+	#-eq 0 = PSv3+
+	#-eq $null = PSv2
+    If(((Get-Command Get-WBSummary*).count -eq 0) -Or ((Get-Command Get-WBSUmmary*).count -eq $Null)){
         Add-PSSnapIn Windows.ServerBackup
     }
 
