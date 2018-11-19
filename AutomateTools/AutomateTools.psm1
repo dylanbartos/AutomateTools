@@ -118,3 +118,5 @@ Function Set-EnvironmentPath{
 . $PSScriptRoot\Get-WBStats.ps1
 . $PSScriptRoot\Get-NoahVersion.ps1
 . $PSScriptRoot\Get-FirewallStatus.ps1
+. $PSScriptRoot\Reboot-Bitlocker.ps1
+. $PSScriptRoot\Remove-TempFiles.ps1
