@@ -120,3 +120,4 @@ Function Set-EnvironmentPath{
 . $PSScriptRoot\Get-FirewallStatus.ps1
 . $PSScriptRoot\Reboot-Bitlocker.ps1
 . $PSScriptRoot\Remove-TempFiles.ps1
+. $PSScriptRoot\Reset-Winsock.ps1
