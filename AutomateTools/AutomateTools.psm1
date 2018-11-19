@@ -121,3 +121,4 @@ Function Set-EnvironmentPath{
 . $PSScriptRoot\Reboot-Bitlocker.ps1
 . $PSScriptRoot\Remove-TempFiles.ps1
 . $PSScriptRoot\Reset-Winsock.ps1
+. $PSScriptRoot\Set-NetProfilePrivate.ps1
