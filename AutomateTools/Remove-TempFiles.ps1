@@ -4,6 +4,7 @@
         $Path,
         [Parameter(Mandatory=$True)]
         $FileType,
+        [ValidateRange(0,3)]
         $Depth = 1,
         $Age = 30
     )
@@ -61,12 +62,11 @@ $Break | Add-Content "C:\TestResults.txt"
 
 If(Test-Path "C:\TestResults.txt"){
     Remove-Item "C:\TestResults.txt"
-    New-Item "C:\TestResults.txt"
+    New-Item -ItemType File "C:\TestResults.txt"
 }
 
 Remove-TempFiles -Path ($env:windir + "\temp\") -FileType "*.*" -Depth 1
-Remove-TempFiles -Path ($env:windir + "\system32\wbem\logs\") -FileType "*.*" -Age 0
-Remove-TempFiles -Path ($env:windir + "\system32\wbem\logs\") -FileType "*.*" -Depth 1
+Remove-TempFiles -Path ($env:windir + "\system32\wbem\logs\") -FileType "*.*" -Depth 1 -Age 0
 Remove-TempFiles -Path ($env:windir + "\system32\logfiles\") -FileType "*.*" -Depth 1
 Remove-TempFiles -Path ($env:windir + "\debug\") -FileType "*.*" -Depth 1 -Age 0
 Remove-TempFiles -Path ($env:windir + "\Logs\CBS\") -FileType "*.log" -Age 14
