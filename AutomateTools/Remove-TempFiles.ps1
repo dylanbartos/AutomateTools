@@ -69,3 +69,11 @@ Function Open-DiskCleanSetup{
         Write-Host "CleanMgr.exe was not found on this system or is not listed in the environment variables."
     }
 }
+
+
+Function Run-DiskCleanup{
+    param(
+        [int]$CfgNum = 0
+    )
+    cleanmgr /sagerun:$CfgNum
+}
