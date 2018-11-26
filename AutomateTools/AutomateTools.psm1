@@ -122,3 +122,4 @@ Function Set-EnvironmentPath{
 . $PSScriptRoot\Remove-TempFiles.ps1
 . $PSScriptRoot\Reset-Winsock.ps1
 . $PSScriptRoot\Set-NetProfilePrivate.ps1
+. $PSScriptRoot\Remove-TempFiles.ps1
