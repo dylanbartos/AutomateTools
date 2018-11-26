@@ -41,39 +41,40 @@ Remove-Files -Path ("C:\users\*\Downloads\") -FileType "*.scl" -ValidationString
 
 Function Open-DiskCleanSetup{
 
-    Try{
-        cleanmgr /sageset:1
-        Write-Host "The Disk Cleanup utility configuration is now open!`n"
-        Write-Host "Here is a listing of options typically selected:"
-        Write-Host " [x] Temporary Setup Files"
-        Write-Host " [x] Old ChkDsk Files"
-        Write-Host " [x] Setup Log Files"
-        Write-Host " [x] Windows Update Cleanup"
-        Write-Host " [x] Windows Defender AntiVirus"
-        Write-Host " [x] Windows Upgrade Log Files"
-        Write-Host " [x] Downloaded Program Files"
-        Write-Host " [x] Temporary Internet Files"
-        Write-Host " [x] Files Discarded By Windows Upgrade"
-        Write-Host " [x] Windows ESD INstallation Files"
-        Write-Host " [x] Previous Windows Installation(s)"
-        Write-Host " [x] Recycle Bin"
-        Write-Host " [x] Retail Demo Offline Content"
-        Write-Host " [x] Update Package Backup Files"
-        Write-Host " [x] Temporary Files"
-        Write-Host " [x] Temporary Windows Installation Files"
-        Write-Host "`nAfter selecting the desired options, automated disk cleanups can be scheduled:"
-        Write-Host " - Automatically through flagging the Dick Celanup EDF in ConnectWise Automate."
-        Write-Host " - Manually through Task Scheduler using 'cleanmgr /sagerun:1' command."
+    Write-Host "`n              ** MICROSOFT DISK CLEANUP CONFIGURATION **`n"
 
+    Try{
+        cleanmgr /sageset:7
+
+        Write-Host "Status: Success!" -ForegroundColor Green
+        Write-Host "`n"
+        Write-Host "You have opened the configuration for the Microsoft Disk Cleanup utility.`n"
+        Write-Host "1. Select all options you wish to clean on an automated schedule. It's"
+        Write-Host "   recommended that all options be selected with the exception of error"
+        Write-Host "   logs.`n"
+        Write-Host "2. When all desired options have been selected, please click 'ok' to save"
+        Write-Host "   the configuration.`n"
+        Write-Host "3. In the Connectwise Automate computer management screen enable the"
+        Write-Host "   option to automate scheduled disk cleanups. This option is located in:`n"
+        Write-Host "	Extra Data Fields > Disk Cleanup > Automate Cleanups" -ForegroundColor Yellow
     }Catch{
-        Write-Host "CleanMgr.exe was not found on this system or is not listed in the environment variables."
+        Write-Host "Status: FAIL`n" -ForegroundColor Magenta
+        Write-Host "cleanmgr.exe could not be found.`n"
+        Write-Host "If you are configuring Disk Cleanup for a Server 2008 or 2012 you might need"
+        Write-Host "to manually configure cleanmgr and set it's path within the environment"
+        Write-Host "variables.`n"
+        Write-Host "Directions on how to do this can be found here. However, it is not recommended"
+        Write-Host "to install the Desktop Experience role on servers.`n"
+        Write-Host "Article: https://support.appliedi.net/kb/a110/how-to-enable-the-disk-cleanup-tool-on-windows-server-2008-r2.aspx"
     }
 }
 
 
 Function Run-DiskCleanup{
     param(
-        [int]$CfgNum = 0
+        [int]$CfgNum = 7
     )
-    cleanmgr /sagerun:$CfgNum
+    [DateTime] $ScriptRun = Get-Date
+    cleanmgr /sagerun:$CfgNum | Out-Null
+    Return $ScriptRun
 }
