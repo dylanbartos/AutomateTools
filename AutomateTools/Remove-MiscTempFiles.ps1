@@ -1,9 +1,11 @@
-﻿Function Remove-TempFiles{
+﻿Function Remove-MiscTempFiles{
 
     Function Remove-Files {
         param(
+            [Parameter(Mandatory=$True)]
             $Path,
-            [string] $FileType = "*.*",
+            [Parameter(Mandatory=$True)]
+            [string] $FileType,
             [bool] $Recurse = $False,
             [int] $Age = 0,
             [Parameter(Mandatory=$True)]
@@ -27,25 +29,32 @@
 
         ForEach($c in $Contents){
             If($c.fullname -like $ValidationString){
-                $c | Remove-Item
+                # File removal disabled pending more testing.
+                $c #| Remove-Item
             }
         }
     }
 
-# List of specific temp locations
-Remove-Files -Path ("C:\Windows\temp\") -Recurse $True -ValidationString "C:\Windows\temp\*"
+# Removal of CBS Log files.
 Remove-Files -Path ("C:\Windows\Logs\CBS\") -FileType "*.log" -Age 14 -ValidationString "C:\Windows\Logs\CBS\*.log"
-Remove-Files -Path ("C:\users\*\AppData\Local\Temp\") -FileType "*.*" -ValidationString "C:\users\*\AppData\Local\Temp\*"
-Remove-Files -Path ("C:\users\*\Downloads\") -FileType "*.scl" -ValidationString "C:\users\*\Downloads\*.scl"
+# Removal of .scl files left behind by Sycle Noah Sync.
+Remove-Files -Path ("C:\users\*\Downloads\") -FileType "*.scl" -Age 1 -ValidationString "C:\users\*\Downloads\*.scl"
 }
 
-Function Open-DiskCleanSetup{
 
+Function Open-DiskCleanSetup{
+    param(
+        [int]$CfgNum = 7
+    )
+
+    # Starting CLI output for technican interaction.
     Write-Host "`n              ** MICROSOFT DISK CLEANUP CONFIGURATION **`n"
 
+    # Running cleanmgr.exe if available.
     Try{
-        cleanmgr /sageset:7
+        cleanmgr /sageset:$CfgNum
 
+        # CLI output that runs on success.
         Write-Host "Status: Success!" -ForegroundColor Green
         Write-Host "`n"
         Write-Host "You have opened the configuration for the Microsoft Disk Cleanup utility.`n"
@@ -58,6 +67,7 @@ Function Open-DiskCleanSetup{
         Write-Host "   option to automate scheduled disk cleanups. This option is located in:`n"
         Write-Host "	Extra Data Fields > Disk Cleanup > Automate Cleanups" -ForegroundColor Yellow
     }Catch{
+        # Cli output given if error occurs with cleanmgr.exe.
         Write-Host "Status: FAIL`n" -ForegroundColor Magenta
         Write-Host "cleanmgr.exe could not be found.`n"
         Write-Host "If you are configuring Disk Cleanup for a Server 2008 or 2012 you might need"
@@ -74,7 +84,10 @@ Function Run-DiskCleanup{
     param(
         [int]$CfgNum = 7
     )
-    [DateTime] $ScriptRun = Get-Date
+    # Running disk cleanup on preconfigured settings.
     cleanmgr /sagerun:$CfgNum | Out-Null
+
+    # Add timestamp for script run.
+    [DateTime] $ScriptRun = Get-Date
     Return $ScriptRun
 }
