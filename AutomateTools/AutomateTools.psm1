@@ -68,51 +68,27 @@ Function Out-PlainXML {
 }
 
 
-# A function to easily add a path to the powershell default environment path list
-Function Set-EnvironmentPath{
+# A function to test and build a given file path
+Function Push-FileStructure{
     param(
-        $ModulePath = "C:\AutomateTools"
+        [Parameter(Mandatory=$True)]
+        [string] $Path
     )
 
-    # Get list of powershell environment paths
-    $ev = $env:PsModulePath -split ";"
-
-    # Searching paths to determine if path already exists
-    $EnvPathExists = "False"
-    ForEach($e in $ev){
-        If($e -eq $ModulePath){
-            $EnvPathExists = "True"
-        }
+    # Adds the trailing slash if left out
+    If(!($Path.EndsWith('\'))){
+        $Path += '\'
     }
 
-    # Adds path to existing list
-    If($EnvPathExists = "True"){
-        $env:PsModulePath = $env:PsModulePath + ";" + $ModulePath
+    # Test each level of the file path and creates it if it doesn't exist
+    $Parts = $Path.split('\')
+    ForEach($Part in $Parts){
+        $RebuiltPath += ($Part + '\')
+        If(!(Test-Path $RebuiltPath)){
+            New-Item -ItemType Directory -Path $RebuiltPath
+        }
     }
 }
-
-
-# A function to test and build a given file path
-    Function Push-FileStructure{
-        param(
-            [Parameter(Mandatory=$True)]
-            [string] $Path
-        )
-
-        # Adds the trailing slash if left out
-        If(!($Path.EndsWith('\'))){
-            $Path += '\'
-        }
-
-        # Test each level of the file path and creates it if it doesn't exist
-        $Parts = $Path.split('\')
-        ForEach($Part in $Parts){
-            $RebuiltPath += ($Part + '\')
-            If(!(Test-Path $RebuiltPath)){
-                New-Item -ItemType Directory -Path $RebuiltPath
-            }
-        }
-    }
 
 # Adding supporting PowerShell functions
 . $PSScriptRoot\Get-WBStats.ps1
@@ -122,4 +98,4 @@ Function Set-EnvironmentPath{
 . $PSScriptRoot\Remove-TempFiles.ps1
 . $PSScriptRoot\Reset-Winsock.ps1
 . $PSScriptRoot\Set-NetProfilePrivate.ps1
-. $PSScriptRoot\Remove-TempFiles.ps1
+. $PSScriptRoot\Remove-MiscTempFiles.ps1
