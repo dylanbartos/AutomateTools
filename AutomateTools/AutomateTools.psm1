@@ -1,4 +1,32 @@
-﻿Function Out-PlainCSV {
+﻿Function Test-AutomateTools{
+    param(
+        [bool] $EchoOnly = $False
+    )
+
+    If($EchoOnly -eq $True){
+        Return "True"
+    }
+
+    Else{
+        [bool] $CatResult = $False
+        If(Test-Path "C:\Windows\System32\WindowsPowerShell\v1.0\profile.ps1"){
+            [string] $R = cat "C:\Windows\System32\WindowsPowerShell\v1.0\profile.ps1"
+            If($R -like "Import-Module C:\AutomateTools\AutomateTools.psm1"){
+                $CatResult = $True
+            }
+        }
+
+        Else{
+            Return "C:\Windows\System32\WindowsPowerShell\v1.0\profile.ps1 is not present."
+            Exit
+        }
+
+        Return $CatResult
+    }
+}
+                
+
+Function Out-PlainCSV {
     param(
         [Parameter(Mandatory=$True)]
         [string] $FilePath,
