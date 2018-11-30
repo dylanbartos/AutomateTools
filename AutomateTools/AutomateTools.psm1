@@ -21,9 +21,9 @@
  
 # Updated List
 . $PSScriptRoot\AT-FileSystemAndOutput.ps1
+. $PSScriptRoot\AT-WindowsServerBackup.ps1
 
 # Old List
-. $PSScriptRoot\Get-WBStats.ps1
 . $PSScriptRoot\Get-NoahVersion.ps1
 . $PSScriptRoot\Get-FirewallStatus.ps1
 . $PSScriptRoot\Reboot-Bitlocker.ps1
