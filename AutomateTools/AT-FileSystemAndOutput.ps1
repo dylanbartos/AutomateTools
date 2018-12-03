@@ -33,7 +33,7 @@ Function Out-PlainXML {
     $xmlWriter.WriteStartDocument()
     $XSLPropText = "type='text/xsl' href='style.xsl'"
     $xmlWriter.WriteProcessingInstruction("xml-stylesheet", $XSLPropText)
-    $xmlWriter.WriteStartElement("RootElement")
+    $xmlWriter.WriteStartElement("Root")
  
     $xmlWriter.WriteStartElement($RootElement)
     $Data.GetEnumerator() | ForEach-Object{
