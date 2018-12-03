@@ -72,11 +72,12 @@ Function Get-WBStats {
     }
 
     $Data = @{
-        ScriptRun = $ScriptRun
-        LastSuccess = $LastSuccess
+        ScriptRun = $ScriptRun | Get-Date -Format s
+        Archive = $WBSummary.NumberOfVersions
+        LastSuccess = $LastSuccess | Get-Date -Format s
         LastJobRunTime = $JobRunTime
         LastBackupAge = $Age
-        NextJob = $NextJob
+        NextJob = $NextJob | Get-Date -Format s
         Scope = $Scope
         BackupType = $BackupType
         EventLogErrors = $ErrorLogs.Count
