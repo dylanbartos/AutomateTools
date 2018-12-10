@@ -71,6 +71,10 @@ Function Get-WBStats {
         $BackupStatus = "Error"
     }
 
+    New-WBLogFile | Out-Null
+    $LogEntry = "Backup Job Status = {0}; Errors = {1}" -f $BackupStatus.ToUpper(), $ErrorLogs.Count 
+    New-WBLogEntry -EntryText $LogEntry -Date ($LastSuccess | Get-Date -Format s)  | Out-Null
+
     $Data = @{
         ScriptRun = $ScriptRun | Get-Date -Format s
         Archive = $WBSummary.NumberOfVersions
@@ -105,6 +109,7 @@ Function Get-WBStats {
     }
 }
 
+
 Function New-WBLogFile{
     param(
         [string] $LogPath = "C:\AutomateTools\Logs\",
@@ -113,11 +118,18 @@ Function New-WBLogFile{
 
     $FullPath = $LogPath + $LogName
 
-    If(!(Test-Path $FullPath)){
-        Push-FileStructure -Path $LogName
+    If(!(Test-Path $LogPath)){
+        New-Item -Path $LogPath -ItemType Directory
         New-Item -Path $FullPath -ItemType File
     }
+    Else{
+        $c = Get-Content $FullPath
+        If($c.count -gt 120){
+            $c | Select -Last 120 | Out-File $File
+        }
+    }
 }
+
 
 Function New-WBLogEntry{
     param(
@@ -128,18 +140,6 @@ Function New-WBLogEntry{
         [string] $Date
     )
 
-    $Line = "[" + $Date + "] - " + $EntryText
+    $Line = "[" + $Date + "] " + $EntryText
     Add-Content $File $Line
-}
-
-
-Function Resize-WBLogFile{
-    param(
-        $File = "C:\AutomateTools\Logs\WindowsServerBackup.log"
-    )
-
-    $c = Get-Content $File
-    If($c.count -gt 120){
-        $c | Select -Last 120 | Out-File $File
-    }
 }
