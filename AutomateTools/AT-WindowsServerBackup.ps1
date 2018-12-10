@@ -72,8 +72,13 @@ Function Get-WBStats {
     }
 
     New-WBLogFile | Out-Null
-    $LogEntry = "Backup Job Status = {0}; Errors = {1}" -f $BackupStatus.ToUpper(), $ErrorLogs.Count 
-    New-WBLogEntry -EntryText $LogEntry -Date ($LastSuccess | Get-Date -Format s)  | Out-Null
+    $LogEntry = "Backup Job Status = {0}" -f $BackupStatus.ToUpper()
+    If($ErrorLogs.Count -gt 0){
+        ForEach($e in $ErrorLogs){
+            New-WBLogEntry -EntryText $e.message -Date ($e.TimeCreated | Get-Date -f s)
+        }
+    }
+    New-WBLogEntry -EntryText $LogEntry -Date ($ScriptRun | Get-Date -Format s)  | Out-Null
 
     $Data = @{
         ScriptRun = $ScriptRun | Get-Date -Format s
