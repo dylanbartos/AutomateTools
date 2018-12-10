@@ -104,3 +104,42 @@ Function Get-WBStats {
         $Data
     }
 }
+
+Function New-WBLogFile{
+    param(
+        [string] $LogPath = "C:\AutomateTools\Logs\",
+        [string] $LogName = "WindowsServerBackup.log"
+    )
+
+    $FullPath = $LogPath + $LogName
+
+    If(!(Test-Path $FullPath)){
+        Push-FileStructure -Path $LogName
+        New-Item -Path $FullPath -ItemType File
+    }
+}
+
+Function New-WBLogEntry{
+    param(
+        [Parameter(Mandatory=$True)]
+        [string] $EntryText,
+        $File = "C:\AutomateTools\Logs\WindowsServerBackup.log",
+        [Parameter(Mandatory=$True)]
+        [string] $Date
+    )
+
+    $Line = "[" + $Date + "] - " + $EntryText
+    Add-Content $File $Line
+}
+
+
+Function Resize-WBLogFile{
+    param(
+        $File = "C:\AutomateTools\Logs\WindowsServerBackup.log"
+    )
+
+    $c = Get-Content $File
+    If($c.count -gt 120){
+        $c | Select -Last 120 | Out-File $File
+    }
+}
