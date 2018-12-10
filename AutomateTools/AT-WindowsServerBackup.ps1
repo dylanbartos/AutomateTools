@@ -35,6 +35,8 @@ Function Get-WBStats {
     param(
         [Parameter(Mandatory=$True)]
         [string] $FilePath,
+        [string] $LogPath = "C:\AutomateTools\Logs\",
+        [string] $LogName = "WindowsServerBackup.log",
         [ValidateSet("Xml", "CliXml", "Csv")]
         [string] $OutputType = "Xml",
         $Delimiter = ",",
@@ -42,6 +44,16 @@ Function Get-WBStats {
         [int] $Threshold = 1,
         [bool] $CliOutput = $False
     )
+
+    Function New-WBLogEntry{
+        param(
+            [string] $EntryText,
+            $File = "C:\AutomateTools\Logs\WindowsServerBackup.log",
+            [string] $Date
+        )
+        $Line = "[" + $Date + "] " + $EntryText
+        Add-Content $File $Line
+    }
 
     If(((Get-Command Get-WBSummary*).count -eq 0) -Or ((Get-Command Get-WBSUmmary*) -eq $Null)){
         Add-PSSnapIn Windows.ServerBackup
@@ -71,7 +83,18 @@ Function Get-WBStats {
         $BackupStatus = "Error"
     }
 
-    New-WBLogFile | Out-Null
+    $FullPath = $LogPath + $LogName
+    If(!(Test-Path $LogPath)){
+        New-Item -Path $LogPath -ItemType Directory
+        New-Item -Path $FullPath -ItemType File
+    }
+    Else{
+        $c = Get-Content $FullPath
+        If($c.count -gt 120){
+            $c | Select -Last 120 | Out-File $File
+        }
+    }
+
     $LogEntry = "Backup Job Status = {0}" -f $BackupStatus.ToUpper()
     If($ErrorLogs.Count -gt 0){
         ForEach($e in $ErrorLogs){
@@ -112,39 +135,4 @@ Function Get-WBStats {
     If($CliOutput -eq $True){
         $Data
     }
-}
-
-
-Function New-WBLogFile{
-    param(
-        [string] $LogPath = "C:\AutomateTools\Logs\",
-        [string] $LogName = "WindowsServerBackup.log"
-    )
-
-    $FullPath = $LogPath + $LogName
-
-    If(!(Test-Path $LogPath)){
-        New-Item -Path $LogPath -ItemType Directory
-        New-Item -Path $FullPath -ItemType File
-    }
-    Else{
-        $c = Get-Content $FullPath
-        If($c.count -gt 120){
-            $c | Select -Last 120 | Out-File $File
-        }
-    }
-}
-
-
-Function New-WBLogEntry{
-    param(
-        [Parameter(Mandatory=$True)]
-        [string] $EntryText,
-        $File = "C:\AutomateTools\Logs\WindowsServerBackup.log",
-        [Parameter(Mandatory=$True)]
-        [string] $Date
-    )
-
-    $Line = "[" + $Date + "] " + $EntryText
-    Add-Content $File $Line
 }
