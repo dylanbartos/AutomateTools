@@ -37,6 +37,7 @@ Function Get-WBStats {
         [string] $FilePath,
         [string] $LogPath = "C:\AutomateTools\Logs\",
         [string] $LogName = "WindowsServerBackup.log",
+        [int] $LogGrooming = 180,
         [ValidateSet("Xml", "CliXml", "Csv")]
         [string] $OutputType = "Xml",
         $Delimiter = ",",
@@ -68,16 +69,13 @@ Function Get-WBStats {
 
     $LastJob = New-TimeSpan -Start $LastSuccess -End $ScriptRun
     $Age = [math]::Round(($LastJob.Days) + (($LastJob.Hours) / 24), 2)
-
     $PreviousJob = Get-WBJob -Previous 1
     $JobRunTime = New-TimeSpan -Start $PreviousJob.StartTime -End $PreviousJob.EndTime
-
     $BackupType = (Get-WBBackupTarget -Policy $WBPolicy).TargetType
     $Scope = $WBPolicy.VolumesToBackup -join ", "
 
     $ErrorLogs = (Get-WinEvent Microsoft-Windows-Backup |
         Where-Object {($_.LevelDisplayName -like 'Error') -and ($_.TimeCreated -ge ($ScriptRun).AddDays(-$Threshold))})
-
     $BackupStatus = "Normal"
     If(($Age -gt $Threshold) -Or ($ErrorLogs.count -gt 0)){
         $BackupStatus = "Error"
@@ -90,8 +88,8 @@ Function Get-WBStats {
     }
     Else{
         $c = Get-Content $FullPath
-        If($c.count -gt 120){
-            $c | Select -Last 120 | Out-File $File
+        If($c.count -gt $LogGrooming){
+            $c | Select -Last $LogGrooming | Out-File $File
         }
     }
 
