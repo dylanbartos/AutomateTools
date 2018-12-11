@@ -93,7 +93,7 @@ Function Get-WBStats {
         }
     }
 
-    $LogEntry = "Backup Job Status = {0}; Last Job = {1}; Backup Age = {2}; Error count = {3};" `
+    $LogEntry = "Backup Job Status = {0}; Last Job = {1}; Backup Age = {2}; Event Log Errors = {3};" `
         -f $BackupStatus.ToUpper(), $LastSuccess, $Age, $ErrorLogs.Count
     If($ErrorLogs.Count -gt 0){
         ForEach($e in $ErrorLogs){
