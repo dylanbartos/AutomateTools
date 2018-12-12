@@ -18,7 +18,6 @@ Function Get-NoahVersion{
     $rx.match($Content).value
 }
 
-
 <#
 .SYNOPSIS
 Remove-NoahBackups removes backup files created by the Noah 4 system.
@@ -69,7 +68,6 @@ Function Remove-NoahBackups{
         Write-Host "Noah backups: $BackupCount found. $BackupsDeleted removed."
     }
 }
-
 
 <#
 .SYNOPSIS
@@ -122,7 +120,6 @@ Function Backup-NoahDatabase{
     Write-Host "$NOAHCfg hash match: $CfgHashMatch"
     Write-Host "$NOAHCore hash match: $CoreHashMatch"
 }
-
 
 <#
 .SYNOPSIS
