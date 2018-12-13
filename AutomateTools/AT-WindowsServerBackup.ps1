@@ -7,6 +7,12 @@ installed. Additionally, you must also save the file to a valid file location an
 Additionally, you may also optionally output the collected data to the CLI window.
 .PARAMETER FilePath
 Accepts the full path of the desired output file. Must include full path, filename, and extension.
+.PARAMETER LogPath
+Accepts the path to the folder in which the log file will be stored. Must include a trailing slash.
+.PARAMETER LogName
+The file name of the log file you will create.
+.PARAMETER LogName
+Specifies how many lines to retain in the log file to prevent large log file sizes.
 .PARAMETER OutputType
 Accepts 'xml', 'clixml', or 'csv' depending on the desired output result. Set to 'xml' by default.
 .PARAMETER Delimiter
