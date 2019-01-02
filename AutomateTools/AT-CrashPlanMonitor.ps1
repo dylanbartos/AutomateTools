@@ -1,4 +1,32 @@
-﻿Function Get-CPData{
+﻿Function Invoke-CPRequest{
+    param(
+        [Parameter(Mandatory=$True)]
+        $Credential,
+        [Parameter(Mandatory=$True)]
+        $Query
+    )
+
+    $RequestResults = ((Invoke-WebRequest -Credential $Credential -Uri ("https://www.crashplan.com/api/computer" + $Query)`
+                        -UseBasicParsing -Method Get -ErrorAction SilentlyContinue -ErrorVariable ErrorResult).content |`
+                        ConvertFrom-Json).data.computers
+
+    Switch($?){
+        "True"  {Return $RequestResults}
+        "False" {Write -Host "[ERROR] Unable to authenticate or GUID was invalid."; Exit}
+    }
+}
+
+Function New-CPLogEntry{
+    param(
+        [string] $EntryText,
+        $File = "C:\AutomateTools\Logs\CrashPlan.log",
+        [string] $Date
+    )
+    $Line = "[" + $Date + "] " + $EntryText
+    Add-Content $File $Line
+}
+
+Function Get-CPData{
     param(
         [Parameter(Mandatory=$True)]
         $Username,
@@ -8,39 +36,11 @@
         $OutputPath = "C:\AutomateTools\Temp\CPResults.xml"
     )
 
-    Function Invoke-CPRequest{
-        param(
-            [Parameter(Mandatory=$True)]
-            $Credential,
-            [Parameter(Mandatory=$True)]
-            $Query
-        )
-
-        $RequestResults = ((Invoke-WebRequest -Credential $Credential -Uri ("https://www.crashplan.com/api/computer" + $Query)`
-                            -UseBasicParsing -Method Get -ErrorAction SilentlyContinue -ErrorVariable ErrorResult).content |`
-                            ConvertFrom-Json).data.computers
-
-        Switch($?){
-            "True"  {Return $RequestResults}
-            "False" {Write -Host "Unable to authenticate or GUID was invalid."; Exit}
-        }
-    }
-
-    Function New-CPLogEntry{
-        param(
-            [string] $EntryText,
-            $File = "C:\AutomateTools\Logs\CrashPlan.log",
-            [string] $Date
-        )
-        $Line = "[" + $Date + "] " + $EntryText
-        Add-Content $File $Line
-    }
-
     $Password = $Password | ConvertTo-SecureString -asPlainText -Force
     $Credential = New-Object System.Management.Automation.PSCredential($Username, $Password)
 
     If ($PSVersiontable.PSVersion.Major -lt 3) {
-        Return "Powershell v2 is not compatible with Invoke-WebRequest."; Exit
+        Return "[ERROR] Powershell v2 is not compatible with Invoke-WebRequest."; Exit
         }
 
     If($Guid -EQ $Null){
@@ -54,13 +54,13 @@
         }
 
         Switch($NumberOfResults){
-            {$NumberOfResults -gt 1} {Return "No GUID specified and to many results match the hostname of the system."; Exit}
-            {$NumberOfResults -lt 1} {Return "No GUID specified and no results match the system's local hostname."; Exit}
+            {$NumberOfResults -gt 1} {Return "[ERROR] No GUID specified and to many results match the hostname of the system."; Exit}
+            {$NumberOfResults -lt 1} {Return "[ERROR] No GUID specified and no results match the system's local hostname."; Exit}
         }
     }
     $R = Invoke-CPRequest -Credential $Credential -Query ("?guid=" + $Guid)
     
-   $data = @{
+    $data = @{
         Name = $R.name
         GUID = $GUID
         Status = $R.status
