@@ -22,6 +22,7 @@
 # Updated List
 . $PSScriptRoot\AT-FileSystemAndOutput.ps1
 . $PSScriptRoot\AT-WindowsServerBackup.ps1
+. $PSScriptRoot\AT-PingTest.ps1
 
 # Old List
 . $PSScriptRoot\Get-NoahVersion.ps1
