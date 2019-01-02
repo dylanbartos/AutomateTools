@@ -26,6 +26,16 @@
         }
     }
 
+    Function New-CPLogEntry{
+        param(
+            [string] $EntryText,
+            $File = "C:\AutomateTools\Logs\CrashPlan.log",
+            [string] $Date
+        )
+        $Line = "[" + $Date + "] " + $EntryText
+        Add-Content $File $Line
+    }
+
     $Password = $Password | ConvertTo-SecureString -asPlainText -Force
     $Credential = New-Object System.Management.Automation.PSCredential($Username, $Password)
 
