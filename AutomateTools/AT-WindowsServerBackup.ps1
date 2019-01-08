@@ -39,17 +39,10 @@ https://github.com/WesScott000/AutomateTools
 
 Function Get-WBStats {
     param(
-        [Parameter(Mandatory=$True)]
-        [string] $FilePath,
-        [string] $LogPath = "C:\AutomateTools\Logs\",
-        [string] $LogName = "WindowsServerBackup.log",
+        [string] $FilePath = "C:\AutomateTools\Temp\WSBResult.xml",
         [int] $LogGrooming = 180,
-        [ValidateSet("Xml", "CliXml", "Csv")]
-        [string] $OutputType = "Xml",
-        $Delimiter = ",",
         [ValidateRange(0,31)]
         [int] $Threshold = 1,
-        [bool] $CliOutput = $False
     )
 
     Function New-WBLogEntry{
@@ -122,22 +115,8 @@ Function Get-WBStats {
     }
     
     Try {
-        If($OutputType -eq "CliXml"){
-            $Data | Export-Clixml -Path $FilePath
-        }
-        ElseIf($OutputType -eq "Csv"){
-            Out-PlainCsv -FilePath $FilePath -Delimiter $Delimiter -Data $Data
-        }
-        Else{
-            Out-PlainXML -FilePath $FilePath -Data $Data
-        }
+        Out-PlainXML -FilePath $FilePath -Data $Data
     } Catch {
-        Write-Host "`n[!] There was a problem saving the output file. It's possible that:
-        - The file path does not exit.
-        - You don't have permissions to write to the file path."
-    }
-
-    If($CliOutput -eq $True){
-        $Data
+        Return "[ERROR] Unable to write XML data to file."
     }
 }

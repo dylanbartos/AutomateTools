@@ -12,19 +12,14 @@
 
     Switch($?){
         "True"  {Return $RequestResults}
-        "False" {Write -Host "[ERROR] Unable to authenticate or GUID was invalid."; Exit}
+        "False" {$Error = "ERROR - Unable to authenticate or GUID was invalid."
+                 Write -Host $Error
+                 New-CPLogEntry -EntryText $Error
+                 Exit
+                 }
     }
 }
 
-Function New-CPLogEntry{
-    param(
-        [string] $EntryText,
-        $File = "C:\AutomateTools\Logs\CrashPlan.log",
-        [string] $Date
-    )
-    $Line = "[" + $Date + "] " + $EntryText
-    Add-Content $File $Line
-}
 
 Function Get-CPData{
     param(
