@@ -1,22 +1,4 @@
-﻿ Function Out-PlainCSV {
-    param(
-        [Parameter(Mandatory=$True)]
-        [string] $FilePath,
-        [Parameter(Mandatory=$True)]
-        [hashtable] $Data,
-        $Delimiter = ","
-    )
-
-    [string] $CSVString = ""
-    $Data.GetEnumerator() | ForEach-Object{
-        $CSVString += "{0}{1}{2}{3}" -f $_.key, $Delimiter, $_.value, $Delimiter
-    }
-    
-    $CSVString.TrimEnd($Delimiter) | Out-File $FilePath
-}
-
-
-Function Out-PlainXML {
+﻿Function Out-PlainXML {
     param(
         [Parameter(Mandatory=$True)]
         [string] $FilePath,
@@ -47,24 +29,4 @@ Function Out-PlainXML {
     $xmlWriter.Finalize
     $xmlWriter.Flush | Out-Null
     $xmlWriter.Close()
-}
-
-
-Function Push-FileStructure{
-    param(
-        [Parameter(Mandatory=$True)]
-        [string] $Path
-    )
-
-    If(!($Path.EndsWith('\'))){
-        $Path += '\'
-    }
-
-    $Parts = $Path.split('\')
-    ForEach($Part in $Parts){
-        $RebuiltPath += ($Part + '\')
-        If(!(Test-Path $RebuiltPath)){
-            New-Item -ItemType Directory -Path $RebuiltPath
-        }
-    }
 }
