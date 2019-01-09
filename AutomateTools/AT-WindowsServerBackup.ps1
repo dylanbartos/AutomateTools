@@ -1,4 +1,14 @@
-﻿<#
+﻿Function New-WBLogEntry{
+    param(
+        [string] $EntryText,
+        $File = "C:\AutomateTools\Logs\WindowsServerBackup.log",
+        [string] $Date
+    )
+    $Line = "[" + $Date + "] " + $EntryText
+    Add-Content $File $Line
+}
+
+<#
 .SYNOPSIS
 Get-WBStats collects information from Windows Server Backup and outputs the data as a file.
 .DESCRIPTION
@@ -11,49 +21,21 @@ Accepts the full path of the desired output file. Must include full path, filena
 Accepts the path to the folder in which the log file will be stored. Must include a trailing slash.
 .PARAMETER LogName
 The file name of the log file you will create.
-.PARAMETER LogName
-Specifies how many lines to retain in the log file to prevent large log file sizes.
-.PARAMETER OutputType
-Accepts 'xml', 'clixml', or 'csv' depending on the desired output result. Set to 'xml' by default.
-.PARAMETER Delimiter
-Accepts and delimiter to be used with 'csv' output. Set to ',' by default.
+.PARAMETER LogGrooming
+Specifies the maximum number of log entries. Oldest entries are removed.
 .PARAMETER Threshold
 Sets the threshold used to check event logs for backup errors. Accepts any integer from 0 to 31.
-.PARAMETER CliOutput
-Accepts $True or $False. Setting to $True will output data results to the CLI.
-.EXAMPLE
-This is the most basic form of the command. The results will be xml data stored in the file as specified:
-    Get-WBStats -FilePath "C:\Logs\WBStatsResults.xml"
-.EXAMPLE
-This command will run as the previous example but also output the data to the CLI on completion:
-    Get-WBStats -FilePath "C:\Logs\WBStatsResults.xml" -CliOutput $True
-.EXAMPLE
-This command will output a file that contains clixml data, checking the Windows Server Backup event logs for errors during the last 14 days.
-    Get-WBStats -FilePath "C:\Logs\WBStatsResults.xml" -OutputType clixml -Threshold 14
-.EXAMPLE
-This command will output a file that contains comma seperated values and replace the commas with a vertical pipe delimiter:
-    Get-WBStats -FilePath "C:\Logs\WBStatsResults.csv" -OutputType csv -Delimiter " | "
-.LINK
-https://github.com/WesScott000/AutomateTools
 #>
 
 Function Get-WBStats {
     param(
         [string] $FilePath = "C:\AutomateTools\Temp\WSBResult.xml",
+        [string] $LogPath = "C:\AutomateTools\Logs\",
+        [string] $LogName = "WSBLog.xml",
         [int] $LogGrooming = 180,
         [ValidateRange(0,31)]
-        [int] $Threshold = 1,
+        [int] $Threshold = 1
     )
-
-    Function New-WBLogEntry{
-        param(
-            [string] $EntryText,
-            $File = "C:\AutomateTools\Logs\WindowsServerBackup.log",
-            [string] $Date
-        )
-        $Line = "[" + $Date + "] " + $EntryText
-        Add-Content $File $Line
-    }
 
     If(((Get-Command Get-WBSummary*).count -eq 0) -Or ((Get-Command Get-WBSUmmary*) -eq $Null)){
         Add-PSSnapIn Windows.ServerBackup
