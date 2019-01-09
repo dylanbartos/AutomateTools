@@ -20,6 +20,20 @@
     }
 }
 
+<#
+.SYNOPSIS
+Get-CPData requests the data for a specified endpoint and outputs the data in an XML file.
+.DESCRIPTION
+This command requires powershell version 3 or higher to perform the request using the code42 API.
+.PARAMETER Username
+Input for the Code42 account username.
+.PARAMETER Password
+Input for the Code42 account password.
+.PARAMETER GUID
+Input for the GUID of the targeted agent.
+.PARAMETER OutputPath
+Specifies the output path for the XML file.
+#>
 
 Function Get-CPData{
     param(
@@ -27,7 +41,8 @@ Function Get-CPData{
         $Username,
         [Parameter(Mandatory=$True)]
         $Password,
-        $Guid,
+        [Parameter(Mandatory=$True)]
+        $GUID,
         $OutputPath = "C:\AutomateTools\Temp\CPResults.xml"
     )
 
@@ -38,21 +53,6 @@ Function Get-CPData{
         Return "[ERROR] Powershell v2 is not compatible with Invoke-WebRequest."; Exit
         }
 
-    If($Guid -EQ $Null){
-        $AllResults = Invoke-CPRequest -Credential $Credential -Query "?active=True"
-
-        ForEach($Result in $AllResults){
-            If($Result.name -match $env:ComputerName){
-                $NumberOfResults += 1
-                $Guid = $Result.GUID
-            }
-        }
-
-        Switch($NumberOfResults){
-            {$NumberOfResults -gt 1} {Return "[ERROR] No GUID specified and to many results match the hostname of the system."; Exit}
-            {$NumberOfResults -lt 1} {Return "[ERROR] No GUID specified and no results match the system's local hostname."; Exit}
-        }
-    }
     $R = Invoke-CPRequest -Credential $Credential -Query ("?guid=" + $Guid)
     
     $data = @{
