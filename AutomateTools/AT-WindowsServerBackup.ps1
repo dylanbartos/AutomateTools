@@ -1,7 +1,7 @@
 ﻿Function New-WBLogEntry{
     param(
         [string] $EntryText,
-        $File = "C:\AutomateTools\Logs\WindowsServerBackup.log",
+        $File = "C:\AutomateTools\Logs\WSBLog.log",
         [string] $Date
     )
     $Line = "[" + $Date + "] " + $EntryText
@@ -31,7 +31,7 @@ Function Get-WBStats {
     param(
         [string] $FilePath = "C:\AutomateTools\Temp\WSBResult.xml",
         [string] $LogPath = "C:\AutomateTools\Logs\",
-        [string] $LogName = "WSBLog.xml",
+        [string] $LogName = "WSBLog.log",
         [int] $LogGrooming = 180,
         [ValidateRange(0,31)]
         [int] $Threshold = 1
