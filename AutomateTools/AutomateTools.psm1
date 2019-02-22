@@ -20,15 +20,12 @@
 }
  
 # Updated List
-. $PSScriptRoot\AT-FileSystemAndOutput.ps1
-. $PSScriptRoot\AT-WindowsServerBackup.ps1
-. $PSScriptRoot\AT-PingTest.ps1
+. $PSScriptRoot\AT-BitLockerUtilities.ps1
+. $PSScriptRoot\AT-DiskUtilities.ps1
+. $PSScriptRoot\AT-FirewallUtilities.ps1
+. $PSScriptRoot\AT-NetworkUtilities.ps1
+. $PSScriptRoot\AT-NoahUtilities.ps1
+. $PSScriptRoot\AT-OutputUtilities.ps1
 
-# Old List
-. $PSScriptRoot\Get-NoahVersion.ps1
-. $PSScriptRoot\Get-FirewallStatus.ps1
-. $PSScriptRoot\Reboot-Bitlocker.ps1
-. $PSScriptRoot\Remove-TempFiles.ps1
-. $PSScriptRoot\Reset-Winsock.ps1
-. $PSScriptRoot\Set-NetProfilePrivate.ps1
-. $PSScriptRoot\Remove-MiscTempFiles.ps1
+. $PSScriptRoot\AT-CPMonitor.ps1
+. $PSScriptRoot\AT-WSBMonitor.ps1
