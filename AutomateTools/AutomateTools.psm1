@@ -26,6 +26,6 @@
 . $PSScriptRoot\AT-NetworkUtilities.ps1
 . $PSScriptRoot\AT-NoahUtilities.ps1
 . $PSScriptRoot\AT-OutputUtilities.ps1
-
+. $PSScriptRoot\AT-AgentUninstall.ps1
 . $PSScriptRoot\AT-CPMonitor.ps1
 . $PSScriptRoot\AT-WSBMonitor.ps1
