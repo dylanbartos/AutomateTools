@@ -5,7 +5,7 @@ This is a simple command that finds and returns the Noah version number.
 Get-NoahVersion
 This command returns the version of the Noah application.
 .LINK
-https://github.com/WesScott000/AutomateTools
+https://github.com/dylanbartos/AutomateTools
 #>
 
 Function Get-NoahVersion{
@@ -31,7 +31,7 @@ Specifies the age in days of the backups that you wish to remove. The deafult va
 .PARAMETER Keep
 Specifies the number of backup files you wish to keep regardless of the age. The default value is 3.
 .LINK
-https://github.com/WesScott000/AutomateTools
+https://github.com/dylanbartos/AutomateTools
 #>
 
 Function Remove-NoahBackups{

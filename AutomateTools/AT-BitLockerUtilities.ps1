@@ -5,7 +5,7 @@ This command initiates a remote reboot which includes a single-reboot suspension
 .EXAMPLE
 Reboot-Bitlocker
 .LINK
-https://github.com/WesScott000/AutomateTools
+https://github.com/dylanbartos/AutomateTools
 #>
 
 Function Reboot-Bitlocker {

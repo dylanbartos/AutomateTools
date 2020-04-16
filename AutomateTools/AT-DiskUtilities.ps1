@@ -11,7 +11,7 @@ Opens the configuration settings at the default value of 7:
 Opens the configuration settings as a user specified value of 3:
     Open-DiskCleanSetup -CfgNum 3
 .LINK
-https://github.com/WesScott000/AutomateTools
+https://github.com/dylanbartos/AutomateTools
 #>
 Function Open-DiskCleanSetup{
     param(

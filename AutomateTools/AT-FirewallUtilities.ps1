@@ -9,7 +9,7 @@ Output Options:
 Enabled
 :Public:Private:Domain: (disabled profiles)
 .LINK
-https://github.com/WesScott000/AutomateTools
+https://github.com/dylanbartos/AutomateTools
 #>
 
 Function Get-FirewallStatus {

@@ -1,10 +1,10 @@
 ﻿<#
 .SYNOPSIS
-This command resets network interfaces using the winsock reset functionality. This command also reboots the computer. 
+Reset-Winsock command resets network interfaces using the winsock reset functionality. This command also reboots the computer. 
 .EXAMPLE
-Reset-Network
+Reset-Winsock
 .LINK
-https://github.com/WesScott000/AutomateTools
+https://github.com/dylanbartos/AutomateTools
 #>
 
 Function Reset-Winsock {
@@ -16,9 +16,9 @@ Function Reset-Winsock {
 .SYNOPSIS
 This command detects the network profile of the currently connected NIC and sets the profile to Private IF it is Public. It does not change domains.
 .EXAMPLE
-Set-NetProfile
+Set-NetProfilePrivate
 .LINK
-https://github.com/WesScott000/AutomateTools
+https://github.com/dylanbartos/AutomateTools
 #>
 
 Function Set-NetProfilePrivate{
@@ -33,17 +33,20 @@ Function Set-NetProfilePrivate{
     }
 }
 
+<#
+.SYNOPSIS
+Test-Ping will ping a set of URIs and log failures.
+.EXAMPLE
 #Mandatory Parameters = URI
 #Script will only write to file/host when ping fails with date/timestamp
-
-#Examples:
 #URI = 192.168.0.1
 #URI = www.google.com
 
 #Example Command
-#AT-PingTest "www.google.com", "192.168.0.1", "SVR-01"
+#Test-Ping "www.google.com", "192.168.0.1", "SVR-01"
+#>
 
-Function AT-PingTest {
+Function Test-Ping {
     param (
         [Parameter(Mandatory=$True, Position=0)] [string[]] $URIs
     )
