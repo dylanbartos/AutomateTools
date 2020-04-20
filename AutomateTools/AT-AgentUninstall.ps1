@@ -4,7 +4,7 @@ Function Remove-LabTech {
         [string] $HashUri
     )
 
-    IF ((Test-Path -Path "C:\AutomateTools\Downloads") -eq $False){
+    If ((Test-Path -Path "C:\AutomateTools\Downloads") -eq $False){
         New-Item -Path "C:\AutomateTools\" -Name "Downloads" -ItemType "Directory" | Out-Null
     }
 
@@ -12,7 +12,7 @@ Function Remove-LabTech {
     $WebHash = $(Invoke-WebRequest -Uri $HashUri).Content
     $FileHash = $(Get-FileHash -Path "C:\AutomateTools\Downloads\LT_Uninstaller.zip" -Algorithm "SHA256").Hash
 
-    IF ($WebHash -eq $FileHash){
+    If ($WebHash -eq $FileHash){
         Expand-Archive -Path "C:\AutomateTools\Downloads\LT_Uninstaller.zip" -DestinationPath "C:\AutomateTools\Downloads\LT_Uninstaller" -Force
         Start-Process -FilePath "C:\AutomateTools\Downloads\LT_Uninstaller\Agent_Uninstall.exe"
         ping 127.0.0.1 -n 30 | Out-Null
