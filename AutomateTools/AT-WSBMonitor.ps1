@@ -37,7 +37,7 @@ Function Get-WBStats {
         [int] $Threshold = 1
     )
 
-    If(((Get-Command Get-WBSummary*).count -eq 0) -Or ((Get-Command Get-WBSUmmary*) -eq $Null)){
+    If(((Get-Command Get-WBSummary*).count -eq 0) -Or ($Null -eq (Get-Command Get-WBSUmmary*))){
         Add-PSSnapIn Windows.ServerBackup
     }
 
@@ -70,7 +70,7 @@ Function Get-WBStats {
     Else{
         $c = Get-Content $FullPath
         If($c.count -gt $LogGrooming){
-            $c | Select -Last $LogGrooming | Out-File $File
+            $c | Select-Object -Last $LogGrooming | Out-File $File
         }
     }
 

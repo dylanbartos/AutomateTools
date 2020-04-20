@@ -20,12 +20,12 @@
 }
  
 # Updated List
-. C:\AutomateTools\AT-BitLockerUtilities.ps1
-. C:\AutomateTools\AT-CPMonitor.ps1
-. C:\AutomateTools\AT-DiskUtilities.ps1
-. C:\AutomateTools\AT-FirewallUtilities.ps1
-. C:\AutomateTools\AT-Install.ps1
-. C:\AutomateTools\AT-NetworkUtilities.ps1
-. C:\AutomateTools\AT-NoahUtilities.ps1
-. C:\AutomateTools\AT-OutputUtilities.ps1
-. C:\AutomateTools\AT-WSBMonitor.ps1
+. $PSScriptRoot\AT-BitLockerUtilities.ps1
+. $PSScriptRoot\AT-CPMonitor.ps1
+. $PSScriptRoot\AT-DiskUtilities.ps1
+. $PSScriptRoot\AT-FirewallUtilities.ps1
+. $PSScriptRoot\AT-Install.ps1
+. $PSScriptRoot\AT-NetworkUtilities.ps1
+. $PSScriptRoot\AT-NoahUtilities.ps1
+. $PSScriptRoot\AT-OutputUtilities.ps1
+. $PSScriptRoot\AT-WSBMonitor.ps1
