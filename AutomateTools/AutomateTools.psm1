@@ -14,7 +14,6 @@
 . $PSScriptRoot\AT-CPMonitor.ps1
 . $PSScriptRoot\AT-DiskUtilities.ps1
 . $PSScriptRoot\AT-FirewallUtilities.ps1
-. $PSScriptRoot\AT-Install.ps1
 . $PSScriptRoot\AT-NetworkUtilities.ps1
 . $PSScriptRoot\AT-NoahUtilities.ps1
 . $PSScriptRoot\AT-OutputUtilities.ps1
