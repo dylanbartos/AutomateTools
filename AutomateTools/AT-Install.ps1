@@ -1,11 +1,11 @@
 <#
 .SYNOPSIS
-Install-AutomateTools downloads and extracts the Automate package onto the C: drive. 
+Install-AT downloads and extracts the Automate package onto the C: drive. 
 
 .PARAMETER Uri
 Specifies the web location for which to download the Automate zip package from.
 #>
-Function Install-AutomateTools {
+Function Install-AT {
     #Requires -RunAsAdministrator
     param (
         [Parameter(Mandatory=$True)]
@@ -34,12 +34,12 @@ Function Install-AutomateTools {
     Remove-Item -Path "C:\AutomateTools\Installer.zip", "C:\AutomateTools\Installer"
     
     try{
-        powershell Test-AutomateTools | Out-Null
+        powershell Test-AT | Out-Null
     }catch{
         Write-Host "Error occurred during installation. Test-AutomateTools failed. Check profile.ps1 installation."
     }
 
-    If ((powershell Test-AutomateTools) -eq "Automate Tools Base Configuration: Successful!"){
+    If ((powershell Test-AT) -eq "Automate Tools Base Configuration: Successful!"){
         Write-Host "Installation Completed Successfully."
     }Else{
         Write-Host "Error occurred during installation. Test-AutomateTools failed."

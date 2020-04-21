@@ -1,4 +1,4 @@
-﻿Function Test-AutomateTools{
+﻿Function Test-AT{
     $ProfileExists = Select-String -Path "C:\Windows\System32\WindowsPowerShell\v1.0\profile.ps1" -Pattern 'bin\AutomateTools.psm1' -SimpleMatch -ErrorAction SilentlyContinue
     If ($null -eq $ProfileExists){
         Return "C:\Windows\System32\WindowsPowerShell\v1.0\profile.ps1 is not present or 'Import-Module C:\AutomateTools\bin\AutomateTools.psm1' is not in the profile.ps1."

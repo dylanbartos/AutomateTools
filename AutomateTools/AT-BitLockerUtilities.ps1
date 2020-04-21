@@ -3,12 +3,10 @@
 This command initiates a remote reboot which includes a single-reboot suspension of Bitlocker.
 *Warning* The reboot is forced.
 .EXAMPLE
-Reboot-Bitlocker
-.LINK
-https://github.com/dylanbartos/AutomateTools
+Restart-ATBitlocker
 #>
 
-Function Reboot-Bitlocker {
+Function Restart-ATBitlocker {
     [regex]$rx = "[O][n]"
     $BitlockerStatus = (manage-bde -status "C:")[11]
     if ($rx.Match($BitlockerStatus).Success -eq $True){

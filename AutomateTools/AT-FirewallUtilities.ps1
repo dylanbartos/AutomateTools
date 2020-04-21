@@ -2,17 +2,15 @@
 .SYNOPSIS
 This command checks firewall profiles status and returns a value determinant upon the result of ALL profiles. In this scenario, one false = false result and all true = true result.
 .EXAMPLE
-Get-FirewallStatus
+Get-ATFirewallStatus
 This command returns the value of the overall firewall status.
 Tested OS: Win10, Win7, SBS 2011
 Output Options:
 Enabled
 :Public:Private:Domain: (disabled profiles)
-.LINK
-https://github.com/dylanbartos/AutomateTools
 #>
 
-Function Get-FirewallStatus {
+Function Get-ATFirewallStatus {
     #Define Regex value and retrieve firewall status
     #netsh returns an array, the 'State' (ON or OFF) line is [3]. This was used to decrease regex false positive surface.
     [regex]$rx = "[O][N]"

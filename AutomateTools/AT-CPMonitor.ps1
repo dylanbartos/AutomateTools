@@ -1,7 +1,7 @@
-﻿Function Invoke-CPRequest{
+﻿Function Invoke-ATCPRequest{
     param(
         [Parameter(Mandatory=$True)]
-        $Credential,
+        [SecureString] $Credential,
         [Parameter(Mandatory=$True)]
         $Query
     )
@@ -12,9 +12,9 @@
 
     Switch($?){
         "True"  {Return $RequestResults}
-        "False" {$Error = "ERROR - Unable to authenticate or GUID was invalid."
-                 Write -Host $Error
-                 New-CPLogEntry -EntryText $Error
+        "False" {$ErrorText = "ERROR - Unable to authenticate or GUID was invalid."
+                 Write-Output -Host $ErrorText
+                 New-CPLogEntry -EntryText $ErrorText
                  Exit
                  }
     }
@@ -22,7 +22,7 @@
 
 <#
 .SYNOPSIS
-Get-CPData requests the data for a specified endpoint and outputs the data in an XML file.
+Get-ATCPData requests the data for a specified endpoint and outputs the data in an XML file.
 .DESCRIPTION
 This command requires powershell version 3 or higher to perform the request using the code42 API.
 .PARAMETER Username
@@ -35,25 +35,20 @@ Input for the GUID of the targeted agent.
 Specifies the output path for the XML file.
 #>
 
-Function Get-CPData{
+Function Get-ATCPData{
     param(
         [Parameter(Mandatory=$True)]
-        $Username,
-        [Parameter(Mandatory=$True)]
-        $Password,
+        [SecureString] $Credential,
         [Parameter(Mandatory=$True)]
         $GUID,
         $OutputPath = "C:\AutomateTools\Temp\CPResults.xml"
     )
 
-    $Password = $Password | ConvertTo-SecureString -asPlainText -Force
-    $Credential = New-Object System.Management.Automation.PSCredential($Username, $Password)
-
     If ($PSVersiontable.PSVersion.Major -lt 3) {
         Return "[ERROR] Powershell v2 is not compatible with Invoke-WebRequest."; Exit
         }
 
-    $R = Invoke-CPRequest -Credential $Credential -Query ("?guid=" + $Guid)
+    $R = Invoke-ATCPRequest -Credential $Credential -Query ("?guid=" + $Guid)
     
     $data = @{
         Name = $R.name

@@ -1,19 +1,17 @@
 ﻿<#
 .SYNOPSIS
-Open-DiskCleanSetup simply opens the cleanmgr.exe configuration and saves the values under configuration number 7.
+Open-ATDiskCleanSetup simply opens the cleanmgr.exe configuration and saves the values under configuration number 7.
 The configuration number can be modified.
 .PARAMETER CfgNum
 Allows you to change the configuration settings to save as a different value.
 .EXAMPLE
 Opens the configuration settings at the default value of 7:
-    Open-DiskCleanSetup
+    Open-ATDiskCleanSetup
 .EXAMPLE 
 Opens the configuration settings as a user specified value of 3:
-    Open-DiskCleanSetup -CfgNum 3
-.LINK
-https://github.com/dylanbartos/AutomateTools
+    Open-ATDiskCleanSetup -CfgNum 3
 #>
-Function Open-DiskCleanSetup{
+Function Open-ATDiskCleanSetup{
     param(
         [int]$CfgNum = 7
     )
@@ -53,20 +51,20 @@ Function Open-DiskCleanSetup{
 
 <#
 .SYNOPSIS
-Run-DiskCleanup runs cleanmgr.exe at the default preconfigured settings of 7 and returns a timestamp.
+Start-ATDiskCleanup runs cleanmgr.exe at the default preconfigured settings of 7 and returns a timestamp.
 The configuration number can be modified.
 .PARAMETER CfgNum
 Allows you to change the configuration settings to save as a different value.
 .EXAMPLE
 Runs cleanmgr.exe and uses the preconfigured settings assigned to configuration 7:
-    Run-DiskCleanup
+    Start-ATDiskCleanup
 .EXAMPLE 
 Runs cleanmgr.exe and uses the preconfigured settings assigned to configuration 3:
-    Run-DiskCleanup -CfgNum 3
+    Start-ATDiskCleanup -CfgNum 3
 .LINK
 https://github.com/WesScott000/AutomateTools
 #>
-Function Run-DiskCleanup{
+Function Start-ATDiskCleanup{
     param(
         [int]$CfgNum = 7
     )

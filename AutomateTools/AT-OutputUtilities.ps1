@@ -1,4 +1,4 @@
-﻿Function Out-PlainXML {
+﻿Function Out-ATPlainXML {
     param(
         [Parameter(Mandatory=$True)]
         [string] $FilePath,

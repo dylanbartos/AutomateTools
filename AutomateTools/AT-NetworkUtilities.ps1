@@ -16,15 +16,13 @@ Function Reset-Winsock {
 .SYNOPSIS
 This command detects the network profile of the currently connected NIC and sets the profile to Private IF it is Public. It does not change domains.
 .EXAMPLE
-Set-NetProfilePrivate
-.LINK
-https://github.com/dylanbartos/AutomateTools
+Set-ATNetProfilePrivate
 #>
 
-Function Set-NetProfilePrivate{
+Function Set-ATNetProfilePrivate{
     #Gets currently connected network profiles
     $net = Get-NetConnectionProfile -IPv4Connectivity "Internet" -NetworkCategory "Public" -ErrorAction SilentlyContinue
-    if ($net -eq $Null){
+    if ($Null -eq $net){
         Write-Host "No public profiles are connected. Unable to switch."
     }Else{
         $net.NetworkCategory = "Private"
@@ -35,7 +33,7 @@ Function Set-NetProfilePrivate{
 
 <#
 .SYNOPSIS
-Test-Ping will ping a set of URIs and log failures.
+Test-ATPing will ping a set of URIs and log failures.
 .EXAMPLE
 #Mandatory Parameters = URI
 #Script will only write to file/host when ping fails with date/timestamp
@@ -43,10 +41,10 @@ Test-Ping will ping a set of URIs and log failures.
 #URI = www.google.com
 
 #Example Command
-#Test-Ping "www.google.com", "192.168.0.1", "SVR-01"
+#Test-ATPing "www.google.com", "192.168.0.1", "SVR-01"
 #>
 
-Function Test-Ping {
+Function Test-ATPing {
     param (
         [Parameter(Mandatory=$True, Position=0)] [string[]] $URIs
     )

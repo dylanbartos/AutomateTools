@@ -1,4 +1,4 @@
-﻿Function New-WBLogEntry{
+﻿Function New-ATWBLogEntry{
     param(
         [string] $EntryText,
         $File = "C:\AutomateTools\Logs\WSBLog.log",
@@ -10,7 +10,7 @@
 
 <#
 .SYNOPSIS
-Get-WBStats collects information from Windows Server Backup and outputs the data as a file.
+Get-ATWBStats collects information from Windows Server Backup and outputs the data as a file.
 .DESCRIPTION
 This command exports Windows Server Backup data as a file. Therefore, you must have the Windows Server Backup feature 
 installed. Additionally, you must also save the file to a valid file location and specify the file name and type.
@@ -27,7 +27,7 @@ Specifies the maximum number of log entries. Oldest entries are removed.
 Sets the threshold used to check event logs for backup errors. Accepts any integer from 0 to 31.
 #>
 
-Function Get-WBStats {
+Function Get-ATWBStats {
     param(
         [string] $FilePath = "C:\AutomateTools\Temp\WSBResult.xml",
         [string] $LogPath = "C:\AutomateTools\Logs\",
@@ -78,10 +78,10 @@ Function Get-WBStats {
         -f $BackupStatus.ToUpper(), $LastSuccess, $Age, $ErrorLogs.Count
     If($ErrorLogs.Count -gt 0){
         ForEach($e in $ErrorLogs){
-            New-WBLogEntry -EntryText $e.message -Date ($e.TimeCreated | Get-Date -f s)
+            New-ATWBLogEntry -EntryText $e.message -Date ($e.TimeCreated | Get-Date -f s)
         }
     }
-    New-WBLogEntry -EntryText $LogEntry -Date ($ScriptRun | Get-Date -Format s)  | Out-Null
+    New-ATWBLogEntry -EntryText $LogEntry -Date ($ScriptRun | Get-Date -Format s)  | Out-Null
 
     $Data = @{
         ScriptRun = $ScriptRun | Get-Date -Format s
@@ -97,7 +97,7 @@ Function Get-WBStats {
     }
     
     Try {
-        Out-PlainXML -FilePath $FilePath -Data $Data
+        Out-ATPlainXML -FilePath $FilePath -Data $Data
     } Catch {
         Return "[ERROR] Unable to write XML data to file."
     }
