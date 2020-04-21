@@ -29,15 +29,15 @@ Remove-ScreenConnect completely uninstalls a ScreenConnect agent.
 .PARAMETER ScreenConnectID
 The unique ID found in all ScreenConnect installations. This is a per-server ID, meaning it exists the same across all of your agents. It exists inside of the parentheses of the installation display name.
 .EXAMPLE
-Remove-ATScreenConnect -ScreenConnectID "a098416j5c0c3908"
+Remove-ATScreenConnect -ID "a098416j5c0c3908"
 #>
 Function Remove-ATScreenConnect {
     param(
         [Parameter (Mandatory=$True)]
-        [string] $ScreenConnectID
+        [string] $ID
     )
 
-    $ScreenConnect = Get-WmiObject -Class Win32_Product | Where-Object{$_.Name -eq "ScreenConnect Client ($ScreenConnectID)"}
+    $ScreenConnect = Get-WmiObject -Class Win32_Product | Where-Object{$_.Name -eq "ScreenConnect Client ($ID)"}
     If ($null -ne $ScreenConnect){
         $ScreenConnect.Uninstall()
     }
