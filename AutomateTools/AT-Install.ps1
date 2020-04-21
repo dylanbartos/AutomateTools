@@ -24,7 +24,7 @@ Function Install-AutomateTools {
     Expand-Archive -Path "C:\AutomateTools\Installer.zip" -DestinationPath "C:\AutomateTools\Installer" -Force
 
     #Profile is necessary in order to load the AutomateTools.psm1 module, which dot sources each PS script
-    $ProfileExists = Select-String -Path "C:\Windows\System32\WindowsPowerShell\v1.0\profile.ps1" -Pattern 'bin\AutomateTools.psm1' -SimpleMatch -ErrorAction SilentlyContinue
+    $ProfileExists = Select-String -Path "C:\Windows\System32\WindowsPowerShell\v1.0\profile.ps1" -Pattern 'bin\AutomateTools.psm1' -SimpleMatch -ErrorAction SilentlyContinue -EV Err
     If ($null -eq $ProfileExists){
         #Import-Module C:\AutomateTools\bin\AutomateTools.psm1 is critical to have inside of the profile.ps1
         Add-Content -Path "C:\Windows\System32\WindowsPowerShell\v1.0\profile.ps1" "Import-Module C:\AutomateTools\bin\AutomateTools.psm1"
