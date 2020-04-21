@@ -1,25 +1,15 @@
 ﻿Function Test-AutomateTools{
-
-    [bool] $CatResult = $False
-
-    If(Test-Path "C:\Windows\System32\WindowsPowerShell\v1.0\profile.ps1"){
-        [string] $R = cat "C:\Windows\System32\WindowsPowerShell\v1.0\profile.ps1"
-        If($R -like "Import-Module C:\AutomateTools\AutomateTools.psm1"){
-            $CatResult = $True
-        }
-    }
-
-    Else{
-        Return "C:\Windows\System32\WindowsPowerShell\v1.0\profile.ps1 is not present."
-        Exit
-    }
-
-    If($CatResult -eq $True){
+    $ProfileExists = Select-String -Path "C:\Windows\System32\WindowsPowerShell\v1.0\profile.ps1" -Pattern 'bin\AutomateTools.psm1' -SimpleMatch -ErrorAction SilentlyContinue
+    If ($null -eq $ProfileExists){
+        Return "C:\Windows\System32\WindowsPowerShell\v1.0\profile.ps1 is not present or 'Import-Module C:\AutomateTools\bin\AutomateTools.psm1' is not in the profile.ps1."
+    }Else{
         Return "Automate Tools Base Configuration: Successful!"
+        Exit
     }
 }
  
 # Updated List
+. $PSScriptRoot\AT-AgentUninstall.ps1
 . $PSScriptRoot\AT-BitLockerUtilities.ps1
 . $PSScriptRoot\AT-CPMonitor.ps1
 . $PSScriptRoot\AT-DiskUtilities.ps1
