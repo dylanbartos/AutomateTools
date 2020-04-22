@@ -1,5 +1,7 @@
 #Requires -RunAsAdministrator
 
+#ExampleChangeForTesting
+
 ##ACTION REQUIRED##
 #Specify the web address of your hosted archive before uploading this file.
 $Uri = "https://example.com/archive.zip"
