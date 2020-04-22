@@ -15,12 +15,12 @@ Automate Tools was developed to be hosted from your own environment. This could 
 
 4. Run the installation script below, modifying the web address to your hosted path.
 
-  ```powershell Invoke-WebRequest -Uri "https://example.com/AutomateTools.zip" -OutFile "\~\Downloads\AutomateTools.zip"; Expand-Archive "\~\Downloads\AutomateTools.zip" "\~\Downloads\AutomateTools" -Force; cd "\~\Downloads\AutomateTools"; ./AT-Install.ps1```
+  ```Invoke-WebRequest -Uri "https://example.com/AutomateTools.zip" -OutFile "$home\Downloads\AutomateTools.zip"; Expand-Archive "$home\Downloads\AutomateTools.zip" "$home\Downloads\AutomateTools" -Force; cd "$home\Downloads\AutomateTools"; ./AT-Install.ps1```
 
 5. You should receive an "Installation Completed Successfully" message. If not, check to ensure that the "profile.ps1" was loaded at "C:\Windows\System32\WindowsPowerShell\v1.0\".
 
 6. Run the cleanup script below to remove temporary installation files.
 
-  ```powershell Remove-Item "\~\Downloads\AutomateTools.zip", "\~\Downloads\AutomateTools" -Force```
+  ```Remove-Item "$home\Downloads\AutomateTools.zip", "$home\Downloads\AutomateTools" -Force```
 
 7. You can now start executing the cmdlets documented in [Commands](../blob/master/Commands.md). Note that you will need to open a new PowerShell session before the cmdlets will be available to you.
