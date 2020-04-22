@@ -11,7 +11,7 @@ Invoke-WebRequest -Uri [https://example.com/AT-Install.ps1] -OutFile "~\Download
 ### Get-ATWBStats
 Pulls data from the event logs and WB cmdlets on WindowsServerBackup operations, writes to file using New-ATWBLogEntry.
 
-Get-ATWBStats -FilePath [OptionalAlternateIfSpecified] -LogPath [OptionalAlternateIfSpecified] -LogName [OptionalAlternateIfSpecified] -LogGrooming [int][OptionalAlternateIfSpecified] -Threshold [int][OptionalAlternateIfSpecified]
+Get-ATWBStats -FilePath [OptionalAlternateIfSpecified] -LogPath [OptionalAlternateIfSpecified] -LogName [OptionalAlternateIfSpecified] -LogGrooming [int][OptionalAlternateIfSpecified] -Threshold [int] [OptionalAlternateIfSpecified]
 
 ### New-ATWBLogEntry
 Writes data from Get-ATWBStats to a log file. This log file can then be used for data extraction with ConnectWise Automate.
