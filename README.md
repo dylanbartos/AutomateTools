@@ -3,7 +3,7 @@
 This repository is a collection of PowerShell modules and tools to be used in conjunction with ConnectWise Automate. One of the basic features of the modules is to provide a flexible way to transfer data from the endpoint to the Automate system. There will be other tools included here that can be used as tools for technicians.
 
 ### Installation Guide
-Automate Tools was developed to be hosted from your own environment. This could be a web server, ftp server, S3 bucket, etc. Basically, you need to offer a zipped archive at a web address. 
+Automate Tools was developed to be hosted from your own environment. This could be a web server, ftp server, S3 bucket, etc. Basically, you need to offer a zipped archive at a web address. You could also host the files in your LTShare and use Automate (LabTech) to deploy the package.
 
 1. Clone or download this repository
     git clone https://github.com/dylanbartos/AutomateTools [DestinationPath]
